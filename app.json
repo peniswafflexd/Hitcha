@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Hitcha",
+    "slug": "Hitcha",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Hitcha"
+}
