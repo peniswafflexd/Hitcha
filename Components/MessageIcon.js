@@ -7,11 +7,11 @@ const ModalController = (setModalVisible, modalVisible) => {
     setModalVisible(!modalVisible);
 }
 
-const NewMessagesModal = ({setModalVisible, modalVisible}) => {
+export const MessageModal = ({setModalVisible, modalVisible, initialScreenConversation= true, conversationID}) => {
     const navigation = () => {
         setConversationScreen(!conversationScreen)
     }
-    const [conversationScreen, setConversationScreen] = useState(true);
+    const [conversationScreen, setConversationScreen] = useState(initialScreenConversation);
     return (
         <Modal isVisible={modalVisible} animationIn={"bounceIn"} animationOut={"bounceOut"}
                onBackdropPress={() => setModalVisible(!modalVisible)}
@@ -77,7 +77,7 @@ const MessageIcon = () => {
                 }}
             />
         </Pressable>
-        <NewMessagesModal setModalVisible={setModalVisible} modalVisible={modalVisible}/>
+        <MessageModal setModalVisible={setModalVisible} modalVisible={modalVisible}/>
     </View>
 }
 
@@ -127,21 +127,3 @@ const styles = StyleSheet.create({
         textAlign: "center"
     }
 });
-
-// const MessagesModal = ({setModalVisible, modalVisible}) => {
-//     let windowWidth = Dimensions.get('window').width
-//     return <View
-//         visible={modalVisible}
-//         style={{
-//             borderRadius: 15,
-//             backgroundColor: '#252525',
-//             position: 'fixed',
-//             height: modalVisible ? 250 : 0,
-//             width: modalVisible ? windowWidth * 0.9 : 0,
-//             top: 100,
-//             left: 0,
-//             zIndex: 100
-//         }}>
-//
-//     </View>
-// }

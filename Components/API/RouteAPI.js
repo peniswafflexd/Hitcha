@@ -205,3 +205,14 @@ export const getInformation = async (userIdString) => {
     return (await getRouteInformation(userIdString)).data()
 
 }
+
+export const hasConversation = () => {
+
+}
+export const createConversation = () => {
+
+}
+
+export const getConversation = () => {
+
+}
