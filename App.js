@@ -1,13 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import TabBar from "./Components/TabBar";
+import { auth } from "./Components/API/RouteAPI"
+import {authChanged} from "./Components/API/RouteAPI";
+import LoginSignUp from "./Components/LoginSignUp";
+
+export let setUser = null;
 
 export default function App() {
+    let appContent = {}
+    const [userAuth, setUserAuth] = useState(auth.currentUser);
+    setUser = setUserAuth;
+    if(userAuth) appContent = <TabBar/>
+    else appContent = <LoginSignUp/>
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+          {appContent}
+      </NavigationContainer>
   );
 }
 
