@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {GiftedChat} from "react-native-gifted-chat";
 import {auth, db} from "../API/RouteAPI";
 
 
-function MessagesScreen({navigation}) {
+function MessagesScreen({navigation, conversationID}) {
     return (
         <SafeAreaView style={{backgroundColor: '#191919', top: 0, height: '100%', width: '100%'}}>
             <View style={{flex: 0.10, flexDirection: 'row', alignItems: 'center',}}>
@@ -25,60 +25,64 @@ function MessagesScreen({navigation}) {
                     </Pressable>
                 </View>
             </View>
-                <Messages/>
+            <Messages conversationID={conversationID}/>
         </SafeAreaView>
-)
+    )
 }
 
-const Messages = () =>
-    {
-        const [messages, setMessages] = useState([]);
+const Messages = ({conversationID}) => {
+    const [messages, setMessages] = useState([]);
 
 
-        useLayoutEffect(() => {
-               const unsubscribe = db
-                    .collection('chats')
-                    .orderBy('createdAt', 'desc')
-                    .onSnapshot(snapshot => setMessages(
-                        snapshot.docs.map(doc => ({
-                            _id: doc.data()._id,
-                            createdAt: doc.data().createdAt.toDate(),
-                            text: doc.data().text,
-                            user: doc.data().user
-                        }))
-                    ))
-                return unsubscribe;
-            }, []);
+    useLayoutEffect(() => {
+        const unsubscribe = db
+            .collection('chats')
+            .doc(conversationID)
+            .collection("messages")
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(snapshot => setMessages(
+                snapshot.docs.map(doc => ({
+                    _id: doc.data()._id,
+                    createdAt: doc.data().createdAt.toDate(),
+                    text: doc.data().text,
+                    user: doc.data().user
+                }))
+            ))
+        return unsubscribe;
+    }, []);
 
 
-        const onSend = useCallback((messages = []) => {
-            setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-            const {
-                _id,
-                createdAt,
-                text,
-                user
-            } = messages[0]
-            db.collection('chats').add({
-                _id,
-                createdAt,
-                text,
-                user
-            })
-        }, [])
+    const onSend = useCallback((messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+        const {
+            _id,
+            createdAt,
+            text,
+            user
+        } = messages[0]
+        db.collection('chats')
+            .doc(conversationID)
+            .collection("messages")
+            .add({
+            _id,
+            createdAt,
+            text,
+            user
+        })
+    }, [])
 
-        return (
-            <GiftedChat
-                messages={messages}
-                showAvatarForEveryMessage={true}
-                onSend={messages => onSend(messages)}
-                user={{
-                    _id: auth?.currentUser?.email,
-                    name: auth?.currentUser?.displayName,
-                    avatar: auth?.currentUser?.photoURL
-                }}
-            />
-        )
-    }
+    return (
+        <GiftedChat
+            messages={messages}
+            showAvatarForEveryMessage={true}
+            onSend={messages => onSend(messages)}
+            user={{
+                _id: auth?.currentUser?.email,
+                name: auth?.currentUser?.displayName,
+                avatar: auth?.currentUser?.photoURL
+            }}
+        />
+    )
+}
 
 export default MessagesScreen;

@@ -2,12 +2,14 @@ import React, {useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
+import {getConversationID} from "./API/RouteAPI";
 
 const ModalController = (setModalVisible, modalVisible) => {
     setModalVisible(!modalVisible);
 }
 
-export const MessageModal = ({setModalVisible, modalVisible, initialScreenConversation= true, conversationID}) => {
+export const MessageModal = ({setModalVisible, modalVisible, initialScreenConversation= true, memberID, memberName}) => {
+    let conversationID = getConversationID(memberID, memberName)
     const navigation = () => {
         setConversationScreen(!conversationScreen)
     }
@@ -19,7 +21,7 @@ export const MessageModal = ({setModalVisible, modalVisible, initialScreenConver
                    alignItems: 'center',
                    margin: conversationScreen ? 10 : 0
                }}>
-            {conversationScreen ? <Conversations navigation={navigation}/> : <Chat navigation={navigation}/>}
+            {conversationScreen ? <Conversations navigation={navigation}/> : <Chat navigation={navigation} conversationID={conversationID}/>}
         </Modal>
     )
 }
@@ -57,8 +59,8 @@ const Conversations = ({navigation}) => {
     )
 }
 
-const Chat = ({navigation}) => {
-    return <MessagesScreen navigation={navigation}/>
+const Chat = ({...props}) => {
+    return <MessagesScreen {...props}/>
 }
 
 const MessageIcon = () => {

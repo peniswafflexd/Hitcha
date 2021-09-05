@@ -206,7 +206,11 @@ export const getInformation = async (userIdString) => {
 
 }
 
-export const hasConversation = () => {
+export const conversationExists = async (conversationID) => {
+    console.log(((await db.collection("chats").doc(conversationID).get()).data()))
+
+
+
 
 }
 export const createConversation = () => {
@@ -214,5 +218,29 @@ export const createConversation = () => {
 }
 
 export const getConversation = () => {
+
+}
+
+export const getConversationID = (memberID, memberName) => {
+    let conversationID;
+    if(auth?.currentUser?.uid < memberID) conversationID = auth?.currentUser?.uid + memberID
+    else conversationID = memberID + auth?.currentUser?.uid
+
+    const conversationRef = db.collection('Users')
+        .doc(auth?.currentUser?.uid)
+        .collection("Conversations")
+        .doc(memberID)
+
+    conversationRef.get()
+        .then((docSnapshot) => {
+            if (!docSnapshot.exists) {
+                conversationRef.set({
+                    conversationID: conversationID,
+                    name: memberName
+                }) // create the document
+            }
+        });
+
+    return conversationID;
 
 }
