@@ -1,10 +1,10 @@
 import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {GiftedChat} from "react-native-gifted-chat";
-import {auth, db} from "../API/RouteAPI";
+import {auth, db, getConversationID} from "../API/RouteAPI";
 
 
-function MessagesScreen({navigation, conversationID}) {
+function MessagesScreen({navigation, conversationID, ...props}) {
     return (
         <SafeAreaView style={{backgroundColor: '#191919', top: 0, height: '100%', width: '100%'}}>
             <View style={{flex: 0.10, flexDirection: 'row', alignItems: 'center',}}>
@@ -25,19 +25,20 @@ function MessagesScreen({navigation, conversationID}) {
                     </Pressable>
                 </View>
             </View>
-            <Messages conversationID={conversationID}/>
+            <Messages conversationID={conversationID} {...props}/>
         </SafeAreaView>
     )
 }
 
-const Messages = ({conversationID}) => {
+const Messages = ({memberID, memberName, conversationID, memberPhoto}) => {
+    let finalConversationID = (conversationID) ? conversationID : getConversationID(memberID, memberName, memberPhoto)
     const [messages, setMessages] = useState([]);
-
+    // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
 
     useLayoutEffect(() => {
         const unsubscribe = db
             .collection('chats')
-            .doc(conversationID)
+            .doc(finalConversationID)
             .collection("messages")
             .orderBy('createdAt', 'desc')
             .onSnapshot(snapshot => setMessages(
@@ -61,7 +62,7 @@ const Messages = ({conversationID}) => {
             user
         } = messages[0]
         db.collection('chats')
-            .doc(conversationID)
+            .doc(finalConversationID)
             .collection("messages")
             .add({
             _id,

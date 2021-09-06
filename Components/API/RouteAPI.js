@@ -221,7 +221,7 @@ export const getConversation = () => {
 
 }
 
-export const getConversationID = (memberID, memberName) => {
+export const getConversationID = (memberID, memberName, photoURL) => {
     let conversationID;
     if(auth?.currentUser?.uid < memberID) conversationID = auth?.currentUser?.uid + memberID
     else conversationID = memberID + auth?.currentUser?.uid
@@ -236,11 +236,36 @@ export const getConversationID = (memberID, memberName) => {
             if (!docSnapshot.exists) {
                 conversationRef.set({
                     conversationID: conversationID,
-                    name: memberName
+                    name: memberName,
+                    photoURL: photoURL
                 }) // create the document
             }
         });
 
     return conversationID;
+}
 
+export const getAllConversationUsers = (conversations, setConversations) => {
+    useEffect(() => {
+        const subscriber = db
+            .collection("Users")
+            .doc(auth?.currentUser?.uid)
+            .collection("Conversations")
+            .onSnapshot(querySnapshot => {
+                    let changes = querySnapshot.docChanges();
+                    let newItems = changes
+                        .filter((change) => change._.type === 'added')
+                        .map((change) => change.doc)
+                    // console.log(newItems[0].data().conversationID);
+                    setConversations(newItems)
+
+                },
+                error => {
+                    console.log(error)
+                })
+
+        return () => {
+            subscriber()
+        }
+    }, []);
 }

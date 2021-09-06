@@ -1,19 +1,29 @@
 import React, {useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
-import {getConversationID} from "./API/RouteAPI";
+import {getAllConversationUsers} from "./API/RouteAPI";
 
 const ModalController = (setModalVisible, modalVisible) => {
     setModalVisible(!modalVisible);
 }
 
-export const MessageModal = ({setModalVisible, modalVisible, initialScreenConversation= true, memberID, memberName}) => {
-    let conversationID = getConversationID(memberID, memberName)
+export const MessageModal = ({
+                                 setModalVisible,
+                                 modalVisible,
+                                 initialScreenConversation = true,
+                                 memberID,
+                                 memberName,
+                                 memberPhoto
+                             }) => {
+    // let conversationID = getConversationID(memberID, memberName)
     const navigation = () => {
         setConversationScreen(!conversationScreen)
     }
+    const [conversationID, setConversationID] = useState(undefined);
     const [conversationScreen, setConversationScreen] = useState(initialScreenConversation);
+    // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
+
     return (
         <Modal isVisible={modalVisible} animationIn={"bounceIn"} animationOut={"bounceOut"}
                onBackdropPress={() => setModalVisible(!modalVisible)}
@@ -21,12 +31,14 @@ export const MessageModal = ({setModalVisible, modalVisible, initialScreenConver
                    alignItems: 'center',
                    margin: conversationScreen ? 10 : 0
                }}>
-            {conversationScreen ? <Conversations navigation={navigation}/> : <Chat navigation={navigation} conversationID={conversationID}/>}
+            {conversationScreen ? <Conversations navigation={navigation} setConversationID={setConversationID}/> :
+                <Chat navigation={navigation} memberID={memberID} memberName={memberName} memberPhoto={memberPhoto}
+                      conversationID={conversationID}/>}
         </Modal>
     )
 }
 
-const Conversations = ({navigation}) => {
+const Conversations = ({navigation, ...props}) => {
     return (
         <View style={{
             height: '50%',
@@ -36,13 +48,14 @@ const Conversations = ({navigation}) => {
             top: '-12%',
             flexDirection: 'column',
         }}>
-            <View style={{
+            <ScrollView style={{
                 flex: 0.8,
                 borderTopRightRadius: 10,
                 borderTopLeftRadius: 10,
             }}>
-                <Text style={{color: 'white'}}>All messages go here</Text>
-            </View>
+                {/*<Text style={{color: 'white'}}>All messages go here</Text>*/}
+                <ConversationList {...props} navigation={navigation}/>
+            </ScrollView>
 
             <View style={{
                 flex: 0.2,
@@ -56,6 +69,34 @@ const Conversations = ({navigation}) => {
                 <Text style={{color: '#FDAF01'}} onPress={navigation}>View All Messages</Text>
             </View>
         </View>
+    )
+}
+
+const ConversationList = ({setConversationID, navigation}) => {
+    const [conversations, setConversations] = useState([]);
+    getAllConversationUsers(conversations, setConversations)
+    return conversations.map((c) =>
+        <Pressable key={c.id} onPress={() => {
+            setConversationID(c.data().conversationID)
+            console.log("setting conversation ID to " + c.data().name + "'s conversation")
+            navigation();
+        }}>
+            <View style={{
+                // backgroundColor: 'grey',
+                height: 75,
+                borderBottomWidth: 0.5,
+                borderColor: 'white',
+                padding: 5,
+                flexDirection: 'row'
+            }}>
+                <Image style={{height: 60, width: 60, borderRadius: 30, flex: 0.2}}
+                       source={{uri: c.data().photoURL}}/>
+                <View style={{flexDirection: 'column', flex: 0.8, padding: 5}}>
+                    <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>{c.data().name}</Text>
+                </View>
+
+            </View>
+        </Pressable>
     )
 }
 

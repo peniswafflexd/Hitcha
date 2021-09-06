@@ -28,11 +28,13 @@ const Map = () => {
     UpdatedRoutes(routes, setRoutes);
     const [routeFocused, setRouteFocused] = useState(false);
     const [routeInformationJSON, setRouteInformationJSON] = useState({});
+    const [memberID, setMemberID] = useState(undefined);
 
     const displayRouteInformation = (userIdString) => {
         getInformation(userIdString).then(data => {
                 setRouteInformationJSON(data)
                 setRouteFocused(true)
+                setMemberID(userIdString)
             }
         )
     }
@@ -58,7 +60,7 @@ const Map = () => {
 
             </MapView>
             <HelpDialog routeDisplay={routeFocused} routeInformation={routeInformationJSON}
-                        setRouteDisplay={setRouteFocused}/>
+                        setRouteDisplay={setRouteFocused} memberID={memberID}/>
         </>
     )
 }
@@ -84,7 +86,7 @@ const HelpDialog = ({routeDisplay, routeInformation, ...props}) => {
     )
 }
 
-const HelpDialogContent = ({routeInformation, setRouteDisplay}) => {
+const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
     const [MessageScreen, setMessageScreen] = useState(false);
 
     return (
@@ -115,6 +117,7 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay}) => {
             <View style={{flex: 0.5, flexDirection: 'column', justifyContent: 'space-around'}}>
                 <Text style={{color: 'white'}}>Destination: {routeInformation.EndName}</Text>
                 <Text style={{color: 'white'}}>Start Location: {routeInformation.StartName}</Text>
+                <Text style={{color: 'white'}}>Member ID: {memberID}</Text>
             </View>
             <View style={{flex: 0.25, flexDirection: 'row', padding: 0}}>
                 <CustomButton color={'transparent'} text={"View Profile"}
@@ -130,8 +133,8 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay}) => {
                               buttonStyle={{height: '100%', margin: 0, marginLeft: 5}}/>
             </View>
             <MessageModal modalVisible={MessageScreen} setModalVisible={setMessageScreen}
-                          initialScreenConversation={false} memberID={routeInformation.id}
-                          memberName={routeInformation.Name}/>
+                          initialScreenConversation={false} memberID={memberID}
+                          memberName={routeInformation.Name} memberPhoto={routeInformation.Photo}/>
         </View>
     )
 }
