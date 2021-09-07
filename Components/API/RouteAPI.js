@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 //import * as firebase from 'firebase'
 import firebase from 'firebase/app';
 import 'firebase/firestore'
@@ -158,11 +158,11 @@ export const UpdatedRoutes = (routes, setRoutes) => {
     }, []);
 }
 
-export const ProfileSnapshot = (setProfileData) => {
+export const ProfileSnapshot = (setProfileData, userID = auth?.currentUser?.uid) => {
     useEffect(() => {
         const subscriber = db
             .collection("Users")
-            .doc(auth.currentUser.uid)
+            .doc(userID)
             .onSnapshot(documentSnapshot => {
                 setProfileData(documentSnapshot.data());
             }, error => {
@@ -172,7 +172,7 @@ export const ProfileSnapshot = (setProfileData) => {
         return () => {
             subscriber()
         }
-    }, []);
+    }, [userID]);
 }
 
 export const getImageURL = (path, setImage) => {
@@ -187,7 +187,7 @@ export const getImageURL = (path, setImage) => {
 export const updateUserProfile = async (updateObj) => {
     await db
         .collection("Users")
-        .doc(auth.currentUser.uid)
+        .doc(auth?.currentUser?.uid)
         .update(updateObj);
 }
 
@@ -210,8 +210,6 @@ export const conversationExists = async (conversationID) => {
     console.log(((await db.collection("chats").doc(conversationID).get()).data()))
 
 
-
-
 }
 export const createConversation = () => {
 
@@ -223,7 +221,7 @@ export const getConversation = () => {
 
 export const getConversationID = (memberID, memberName, photoURL) => {
     let conversationID;
-    if(auth?.currentUser?.uid < memberID) conversationID = auth?.currentUser?.uid + memberID
+    if (auth?.currentUser?.uid < memberID) conversationID = auth?.currentUser?.uid + memberID
     else conversationID = memberID + auth?.currentUser?.uid
 
     const conversationRef = db.collection('Users')
@@ -268,4 +266,70 @@ export const getAllConversationUsers = (conversations, setConversations) => {
             subscriber()
         }
     }, []);
+}
+
+export const getUserProfileData = (userID, setProfileData) => {
+
+
+    useEffect(() => {
+        const subscriber = () => {
+            db
+                .collection('Users')
+                .doc(userID)
+                .onSnapshot((QuerySnapshot) => {
+                    console.log("getting data")
+                    setProfileData(QuerySnapshot.data())
+                },
+                    error => {
+                        console.log(error)
+                    })
+        }
+
+        return () => {
+            subscriber()
+        };
+    }, []);
+
+}
+
+export const sendMessage = (messages, conversationID, userID) => {
+    const {
+        _id,
+        createdAt,
+        text,
+        user
+    } = messages[0]
+    db.collection('chats')
+        .doc(conversationID)
+        .collection("messages")
+        .add({
+            _id,
+            createdAt,
+            text,
+            user
+        })
+
+    console.log(userID)
+
+    db.collection("Users")
+        .doc(userID)
+        .collection("Conversations")
+        .doc(auth?.currentUser?.uid)
+        .set({
+            conversationID: conversationID,
+            name: auth?.currentUser?.displayName,
+            photoURL: auth?.currentUser?.photoURL,
+            message: text,
+            unread: true
+        })
+}
+
+export const readMessage = (memberID) => {
+    db.collection("Users")
+        .doc(auth?.currentUser?.uid)
+        .collection("Conversations")
+        .doc(memberID)
+        .update({
+            unread: false
+        })
 }

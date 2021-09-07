@@ -1,7 +1,7 @@
 import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {GiftedChat} from "react-native-gifted-chat";
-import {auth, db, getConversationID} from "../API/RouteAPI";
+import {auth, db, getConversationID, sendMessage} from "../API/RouteAPI";
 
 
 function MessagesScreen({navigation, conversationID, ...props}) {
@@ -35,6 +35,26 @@ const Messages = ({memberID, memberName, conversationID, memberPhoto}) => {
     const [messages, setMessages] = useState([]);
     // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
 
+    const onSend = useCallback((conversationID, memberID ,messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+        sendMessage(messages, conversationID, memberID);
+        // const {
+        //     _id,
+        //     createdAt,
+        //     text,
+        //     user
+        // } = messages[0]
+        // db.collection('chats')
+        //     .doc(finalConversationID)
+        //     .collection("messages")
+        //     .add({
+        //     _id,
+        //     createdAt,
+        //     text,
+        //     user
+        // })
+    }, [])
+
     useLayoutEffect(() => {
         const unsubscribe = db
             .collection('chats')
@@ -53,30 +73,11 @@ const Messages = ({memberID, memberName, conversationID, memberPhoto}) => {
     }, []);
 
 
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        const {
-            _id,
-            createdAt,
-            text,
-            user
-        } = messages[0]
-        db.collection('chats')
-            .doc(finalConversationID)
-            .collection("messages")
-            .add({
-            _id,
-            createdAt,
-            text,
-            user
-        })
-    }, [])
-
     return (
         <GiftedChat
             messages={messages}
             showAvatarForEveryMessage={true}
-            onSend={messages => onSend(messages)}
+            onSend={messages => onSend(conversationID, memberID, messages)}
             user={{
                 _id: auth?.currentUser?.email,
                 name: auth?.currentUser?.displayName,

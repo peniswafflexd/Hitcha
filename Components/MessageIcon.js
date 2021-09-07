@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
-import {getAllConversationUsers} from "./API/RouteAPI";
+import {getAllConversationUsers, readMessage} from "./API/RouteAPI";
 
 const ModalController = (setModalVisible, modalVisible) => {
     setModalVisible(!modalVisible);
@@ -22,6 +22,7 @@ export const MessageModal = ({
     }
     const [conversationID, setConversationID] = useState(undefined);
     const [conversationScreen, setConversationScreen] = useState(initialScreenConversation);
+    const [callbackMemberID, setCallbackMemberID] = useState(memberID)
     // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
 
     return (
@@ -31,8 +32,9 @@ export const MessageModal = ({
                    alignItems: 'center',
                    margin: conversationScreen ? 10 : 0
                }}>
-            {conversationScreen ? <Conversations navigation={navigation} setConversationID={setConversationID}/> :
-                <Chat navigation={navigation} memberID={memberID} memberName={memberName} memberPhoto={memberPhoto}
+            {conversationScreen ? <Conversations navigation={navigation} setConversationID={setConversationID}
+                                                 setCallbackMemberID={setCallbackMemberID}/> :
+                <Chat navigation={navigation} memberID={callbackMemberID} memberName={memberName} memberPhoto={memberPhoto}
                       conversationID={conversationID}/>}
         </Modal>
     )
@@ -72,12 +74,14 @@ const Conversations = ({navigation, ...props}) => {
     )
 }
 
-const ConversationList = ({setConversationID, navigation}) => {
+const ConversationList = ({setCallbackMemberID, setConversationID, navigation}) => {
     const [conversations, setConversations] = useState([]);
     getAllConversationUsers(conversations, setConversations)
     return conversations.map((c) =>
         <Pressable key={c.id} onPress={() => {
             setConversationID(c.data().conversationID)
+            setCallbackMemberID(c.id)
+            readMessage(c.id)
             console.log("setting conversation ID to " + c.data().name + "'s conversation")
             navigation();
         }}>
@@ -91,8 +95,17 @@ const ConversationList = ({setConversationID, navigation}) => {
             }}>
                 <Image style={{height: 60, width: 60, borderRadius: 30, flex: 0.2}}
                        source={{uri: c.data().photoURL}}/>
-                <View style={{flexDirection: 'column', flex: 0.8, padding: 5}}>
-                    <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>{c.data().name}</Text>
+                <View style={{flexDirection: 'column', flex: 0.8, padding: 5, overflow: 'hidden'}}>
+                    <Text style={{
+                        color: c.data().unread ? '#FDAF01' : 'white',
+                        fontWeight: 'bold',
+                        fontSize: 18
+                    }}>{c.data().name}</Text>
+                    <Text style={{
+                        color: 'white',
+                        fontWeight: c.data().unread ? 'bold' : 'normal',
+                        fontSize: 12
+                    }}>{c.data().message}</Text>
                 </View>
 
             </View>

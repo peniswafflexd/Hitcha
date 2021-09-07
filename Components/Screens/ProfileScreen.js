@@ -6,8 +6,8 @@ import CustomButton from "../CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
 import UpdateProfile from "./UpdateProfile";
 
-const testCoverPhoto = "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg"
-const testProfilePhoto = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/placeholder-profile_1.png"
+export const testCoverPhoto = "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg"
+export const testProfilePhoto = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/placeholder-profile_1.png"
 
 const Stack = createStackNavigator();
 

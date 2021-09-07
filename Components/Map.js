@@ -5,6 +5,7 @@ import MapViewDirections from "react-native-maps-directions";
 import {Image, Pressable, Text, View} from "react-native";
 import CustomButton from "./CustomButton";
 import {MessageModal} from "./MessageIcon";
+import ProfileModal from "./ProfileModal";
 
 
 const RenderedRoutes = ({routes, routeInformationCallback}) => {
@@ -88,6 +89,7 @@ const HelpDialog = ({routeDisplay, routeInformation, ...props}) => {
 
 const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
     const [MessageScreen, setMessageScreen] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
 
     return (
         <View style={{flexDirection: 'column', width: "100%", height: '100%'}}>
@@ -128,6 +130,7 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
                                   margin: 0,
                                   marginRight: 5
                               }}
+                              onPress={() => setShowProfile(true)}
                 />
                 <CustomButton onPress={() => setMessageScreen(!MessageScreen)} color={'#FDAF01'} text={"Message"}
                               buttonStyle={{height: '100%', margin: 0, marginLeft: 5}}/>
@@ -135,6 +138,8 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
             <MessageModal modalVisible={MessageScreen} setModalVisible={setMessageScreen}
                           initialScreenConversation={false} memberID={memberID}
                           memberName={routeInformation.Name} memberPhoto={routeInformation.Photo}/>
+            <ProfileModal modalVisible={showProfile} setModalVisible={setShowProfile} memberID={memberID}
+                          setMessageScreen={setMessageScreen}/>
         </View>
     )
 }
