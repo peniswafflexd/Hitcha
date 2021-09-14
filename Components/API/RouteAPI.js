@@ -333,3 +333,16 @@ export const readMessage = (memberID) => {
             unread: false
         })
 }
+
+export const getUserRoute = async (setUserRoute, memberID = auth?.currentUser?.uid) => {
+   const snapshot = db
+        .collection('Routes')
+        .doc(memberID)
+        .get()
+
+     setUserRoute((await snapshot).data())
+}
+
+export const deleteRoute = (memberID = auth?.currentUser?.uid) => {
+    db.collection("Routes").doc(memberID).delete().then(() => alert("Route Removed"))
+}

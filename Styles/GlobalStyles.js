@@ -24,17 +24,24 @@ import {
 } from '@expo-google-fonts/roboto'
 
 
-export const styles = StyleSheet.create({
+export const globalStyles = StyleSheet.create({
     screenTitle: {
-        fontSize: 20,
-        color: "#FFFFFF",
-        position: 'absolute',
-        left: 25,
-        top: 50,
+        color: 'white',
+        fontSize: 28,
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     normalText: {
         fontSize: 14,
         color: "#FFFFFF",
         // fontFamily: 'Roboto-Thin'
-    }
+    },
+    // colors: {
+    //     primary: '#FDAF01',
+    //     darkBlack: '#191919',
+    //     mediumBlack: '#252525',
+    //     lightBlack: '#413F3F',
+    //     lightText: '#C1C1C1'
+    //
+    // }
 });

@@ -29,13 +29,16 @@ const Map = () => {
     UpdatedRoutes(routes, setRoutes);
     const [routeFocused, setRouteFocused] = useState(false);
     const [routeInformationJSON, setRouteInformationJSON] = useState({});
-    const [memberID, setMemberID] = useState(undefined);
-
+    const [memberData, setMemberData] = useState({});
     const displayRouteInformation = (userIdString) => {
         getInformation(userIdString).then(data => {
+                setMemberData({
+                    name: data.Name,
+                    photo: data.Photo,
+                    ID: userIdString
+                })
                 setRouteInformationJSON(data)
                 setRouteFocused(true)
-                setMemberID(userIdString)
             }
         )
     }
@@ -61,7 +64,7 @@ const Map = () => {
 
             </MapView>
             <HelpDialog routeDisplay={routeFocused} routeInformation={routeInformationJSON}
-                        setRouteDisplay={setRouteFocused} memberID={memberID}/>
+                        setRouteDisplay={setRouteFocused} memberData={memberData} />
         </>
     )
 }
@@ -87,7 +90,7 @@ const HelpDialog = ({routeDisplay, routeInformation, ...props}) => {
     )
 }
 
-const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
+const HelpDialogContent = ({routeInformation, setRouteDisplay, memberData}) => {
     const [MessageScreen, setMessageScreen] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
@@ -119,7 +122,7 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
             <View style={{flex: 0.5, flexDirection: 'column', justifyContent: 'space-around'}}>
                 <Text style={{color: 'white'}}>Destination: {routeInformation.EndName}</Text>
                 <Text style={{color: 'white'}}>Start Location: {routeInformation.StartName}</Text>
-                <Text style={{color: 'white'}}>Member ID: {memberID}</Text>
+                <Text style={{color: 'white'}}>Member ID: {memberData.ID}</Text>
             </View>
             <View style={{flex: 0.25, flexDirection: 'row', padding: 0}}>
                 <CustomButton color={'transparent'} text={"View Profile"}
@@ -135,10 +138,9 @@ const HelpDialogContent = ({routeInformation, setRouteDisplay, memberID}) => {
                 <CustomButton onPress={() => setMessageScreen(!MessageScreen)} color={'#FDAF01'} text={"Message"}
                               buttonStyle={{height: '100%', margin: 0, marginLeft: 5}}/>
             </View>
-            <MessageModal modalVisible={MessageScreen} setModalVisible={setMessageScreen}
-                          initialScreenConversation={false} memberID={memberID}
-                          memberName={routeInformation.Name} memberPhoto={routeInformation.Photo}/>
-            <ProfileModal modalVisible={showProfile} setModalVisible={setShowProfile} memberID={memberID}
+            <MessageModal modalVisible={MessageScreen} passedMemberData={memberData} setModalVisible={setMessageScreen}
+                          initialScreenConversation={false} />
+            <ProfileModal modalVisible={showProfile} setModalVisible={setShowProfile}
                           setMessageScreen={setMessageScreen}/>
         </View>
     )

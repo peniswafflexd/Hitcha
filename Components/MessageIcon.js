@@ -12,18 +12,18 @@ export const MessageModal = ({
                                  setModalVisible,
                                  modalVisible,
                                  initialScreenConversation = true,
+                                 passedMemberData,
                                  memberID,
                                  memberName,
                                  memberPhoto
                              }) => {
-    // let conversationID = getConversationID(memberID, memberName)
     const navigation = () => {
         setConversationScreen(!conversationScreen)
     }
-    const [conversationID, setConversationID] = useState(undefined);
+    // const [conversationID, setConversationID] = useState(undefined);
     const [conversationScreen, setConversationScreen] = useState(initialScreenConversation);
-    const [callbackMemberID, setCallbackMemberID] = useState(memberID)
-    // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
+    // const [callbackMemberID, setCallbackMemberID] = useState(memberID)
+    const [memberData, setMemberData] = useState(passedMemberData);
 
     return (
         <Modal isVisible={modalVisible} animationIn={"bounceIn"} animationOut={"bounceOut"}
@@ -32,10 +32,8 @@ export const MessageModal = ({
                    alignItems: 'center',
                    margin: conversationScreen ? 10 : 0
                }}>
-            {conversationScreen ? <Conversations navigation={navigation} setConversationID={setConversationID}
-                                                 setCallbackMemberID={setCallbackMemberID}/> :
-                <Chat navigation={navigation} memberID={callbackMemberID} memberName={memberName} memberPhoto={memberPhoto}
-                      conversationID={conversationID}/>}
+            {conversationScreen ? <Conversations navigation={navigation} setMemberData={setMemberData}/> :
+                <Chat navigation={navigation} memberData={memberData} />}
         </Modal>
     )
 }
@@ -74,15 +72,22 @@ const Conversations = ({navigation, ...props}) => {
     )
 }
 
-const ConversationList = ({setCallbackMemberID, setConversationID, navigation}) => {
+const ConversationList = ({setMemberData, navigation}) => {
     const [conversations, setConversations] = useState([]);
     getAllConversationUsers(conversations, setConversations)
     return conversations.map((c) =>
         <Pressable key={c.id} onPress={() => {
-            setConversationID(c.data().conversationID)
-            setCallbackMemberID(c.id)
+            // setConversationID(c.data().conversationID)
+            // setCallbackMemberID(c.id)
+            setMemberData({
+                conversationID: c.data().conversationID,
+                ID: c.id,
+                photo: c.data().photoURL,
+                name: c.data().name,
+                message: c.data().message,
+                unread: c.data().unread
+            })
             readMessage(c.id)
-            console.log("setting conversation ID to " + c.data().name + "'s conversation")
             navigation();
         }}>
             <View style={{

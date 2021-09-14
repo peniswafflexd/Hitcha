@@ -2,13 +2,30 @@ import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {GiftedChat} from "react-native-gifted-chat";
 import {auth, db, getConversationID, sendMessage} from "../API/RouteAPI";
+import ProfileModal from "../ProfileModal";
 
 
-function MessagesScreen({navigation, conversationID, ...props}) {
+function MessagesScreen({navigation, memberData, ...props}) {
     return (
         <SafeAreaView style={{backgroundColor: '#191919', top: 0, height: '100%', width: '100%'}}>
             <View style={{flex: 0.10, flexDirection: 'row', alignItems: 'center',}}>
-                <Text style={{flex: 1, left: 10, color: 'white', fontWeight: 'bold', fontSize: 24,}}>Julia</Text>
+                <Image source={{uri: memberData.photo}}
+                       style={{
+                           width: 80,
+                           height: 80,
+                           borderRadius: 40,
+                           borderWidth: 2,
+                           borderColor: '#252525',
+                           margin: 10,
+                           marginTop: 30
+                       }}/>
+                <Text style={{
+                    flex: 1,
+                    left: 10,
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 24,
+                }}>{memberData.name.split(' ')[0]}</Text>
                 <View style={{flex: 0.1, right: 10, zIndex: 100}}>
                     <Pressable onPress={navigation}>
                         <Image
@@ -25,34 +42,19 @@ function MessagesScreen({navigation, conversationID, ...props}) {
                     </Pressable>
                 </View>
             </View>
-            <Messages conversationID={conversationID} {...props}/>
+            <Messages memberData={memberData} {...props}/>
         </SafeAreaView>
     )
 }
 
-const Messages = ({memberID, memberName, conversationID, memberPhoto}) => {
-    let finalConversationID = (conversationID) ? conversationID : getConversationID(memberID, memberName, memberPhoto)
+const Messages = ({memberData}) => {
+    let finalConversationID = (memberData?.conversationID) ? memberData?.conversationID : getConversationID(memberData?.ID, memberData?.name, memberData?.photo)
     const [messages, setMessages] = useState([]);
-    // console.log("memberID: " + memberID + "\nmemberName: " + memberName + "\nconversationID: " + conversationID);
+    const [ProfileModalVisible, setProfileModalVisible] = useState(false);
 
-    const onSend = useCallback((conversationID, memberID ,messages = []) => {
+    const onSend = useCallback((conversationID, memberID, messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         sendMessage(messages, conversationID, memberID);
-        // const {
-        //     _id,
-        //     createdAt,
-        //     text,
-        //     user
-        // } = messages[0]
-        // db.collection('chats')
-        //     .doc(finalConversationID)
-        //     .collection("messages")
-        //     .add({
-        //     _id,
-        //     createdAt,
-        //     text,
-        //     user
-        // })
     }, [])
 
     useLayoutEffect(() => {
@@ -74,16 +76,20 @@ const Messages = ({memberID, memberName, conversationID, memberPhoto}) => {
 
 
     return (
-        <GiftedChat
-            messages={messages}
-            showAvatarForEveryMessage={true}
-            onSend={messages => onSend(conversationID, memberID, messages)}
-            user={{
-                _id: auth?.currentUser?.email,
-                name: auth?.currentUser?.displayName,
-                avatar: auth?.currentUser?.photoURL
-            }}
-        />
+        <>
+            <GiftedChat
+                messages={messages}
+                showAvatarForEveryMessage={true}
+                onSend={messages => onSend(memberData.conversationID, memberData.ID, messages)}
+                user={{
+                    _id: auth?.currentUser?.email,
+                    name: auth?.currentUser?.displayName,
+                    avatar: auth?.currentUser?.photoURL
+                }}
+                onPressAvatar={() => setProfileModalVisible(true)}
+            />
+            <ProfileModal modalVisible={ProfileModalVisible} setModalVisible={setProfileModalVisible} memberID={memberData.ID}/>
+        </>
     )
 }
 

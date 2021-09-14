@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
-import {styles} from "../../Styles/Styles";
+import {globalStyles} from "../../Styles/GlobalStyles";
 import MessageIcon from "../MessageIcon";
 import Map from "../Map"
 import Header from "../Header";

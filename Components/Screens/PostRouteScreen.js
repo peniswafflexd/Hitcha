@@ -53,12 +53,7 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
                     language: 'en',
                 }}
                 styles={{
-                    container: {
-                        flex: 0,
-                        zIndex: 100
-                    },
                     textInputContainer: {
-                        // backgroundColor: 'yellow',
                         width: '75%',
                         marginTop: 10
                     },
@@ -69,17 +64,15 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
                         backgroundColor: '#413F3F',
                         borderRadius: 10,
                     },
-                    predefinedPlacesDescription: {
-                        color: 'green',
-                    },
                     listView: {
-                        top: 45.5,
-                        zIndex: 100,
-                        position: 'absolute',
-                        color: 'white',
-                        backgroundColor: "black",
                         width: '89%',
-                        borderRadius: 10
+                        borderRadius: 10,
+                    },
+                    row: {
+                        backgroundColor: '#252525',
+                    },
+                    description: {
+                        color: '#C1C1C1'
                     }
                 }}
             />
