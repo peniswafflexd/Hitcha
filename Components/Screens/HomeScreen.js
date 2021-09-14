@@ -5,33 +5,14 @@ import PostRouteScreen from "./PostRouteScreen";
 import Header from "../Header"
 import {deleteRoute, getUserRoute} from "../API/RouteAPI";
 import CustomButton from "../CustomButton";
-import {globalStyles} from "../../Styles/GlobalStyles";
+import {colors, globalStyles} from "../../Styles/GlobalStyles";
 
+// A button with an image for a background.
 const ImageButton = ({image, title, onPress}) => {
     return <View style={{flex: 1, margin: 10, zIndex: 0}}>
         <Pressable onPress={onPress}>
-            <ImageBackground
-                source={image}
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 15,
-                    overflow: 'hidden',
-                    zIndex: 0
-                }}
-            >
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    opacity: 0.4,
-                    backgroundColor: 'black',
-                    height: '100%',
-                    width: '100%',
-                    zIndex: 0
-                }}/>
+            <ImageBackground source={image} style={style.ImageButton}>
+                <View style={style.ImageButtonOverlay}/>
                 <Text style={globalStyles.screenTitle}>{title}</Text>
             </ImageBackground>
         </Pressable>
@@ -39,7 +20,6 @@ const ImageButton = ({image, title, onPress}) => {
 }
 
 const Stack = createStackNavigator();
-
 
 function HomeScreen() {
     return <Stack.Navigator initalRouteName={"Home"} headerMode={false}>
@@ -50,10 +30,9 @@ function HomeScreen() {
 
 function Content({navigation}) {
     const [userRoute, setUserRoute] = useState(undefined);
-    getUserRoute(setUserRoute)
+    getUserRoute(setUserRoute) // doesn't return anything so not worried about the .then()
     return (
-        <SafeAreaView
-            style={{backgroundColor: '#191919', height: '100%', flexDirection: 'column', alignItems: 'center',}}>
+        <SafeAreaView style={style.safeArea}>
             <Header title={"Home"}/>
             <View style={{flex: 0.25, flexDirection: 'row'}}>
                 <ImageButton image={require("../../assets/images/steeringwheel.jpg")} title={"Driving Somewhere"}
@@ -67,40 +46,31 @@ function Content({navigation}) {
 
 const UserRoute = ({userRoute, setUserRoute}) => {
     return (
-        <View style={{
-            width: '95%',
-            backgroundColor: '#252525',
-            margin: 20,
-            borderRadius: 10,
-            flex: 0.3,
-            padding: 10
-        }}>
-            <Text style={{fontSize: 20, color: 'white',}}>Your current route: </Text>
-            <Text style={{fontSize: 17, color: 'white',}}>Start:<Text
-                style={{fontSize: 17, color: '#FDAF01', padding: 30}}> {userRoute.StartName}</Text></Text>
-            <Text style={{fontSize: 17, color: 'white',}}>End:<Text
-                style={{fontSize: 17, color: '#FDAF01',}}> {userRoute.EndName}</Text></Text>
+        <View style={style.userRouteView}>
+            <Text style={style.userRouteTitle}>Your current route: </Text>
+            <Text style={style.userRouteDetails}>Start:
+                <Text style={style.userRouteAccent}> {userRoute.StartName}</Text>
+            </Text>
+            <Text style={style.userRouteDetails}>End:
+                <Text style={style.userRouteAccent}> {userRoute.EndName}</Text>
+            </Text>
+
             <View style={{flexDirection: 'row'}}>
                 <CustomButton flex={0.5} color={"transparent"} text={"Edit"}
                               buttonStyle={{
                                   borderWidth: 1,
                                   borderColor: 'white',
                               }}/>
-                <CustomButton flex={0.5} color={'#FDAF01'} text={"Finish"} onPress={() => {
-                    deleteRoute()
-                    setUserRoute(null)
-                }}/>
+                <CustomButton flex={0.5} color={'#FDAF01'} text={"Finish"}
+                              onPress={() => {
+                                  deleteRoute()
+                                  setUserRoute(null)
+                              }}/>
             </View>
         </View>
     )
 }
 
-// <ImageButton
-//     title={"Hitching Somewhere"}
-//     onPress={() => alert("Hitching Somewhere")}
-//     image={require("../../assets/images/backpacking.jpg")}
-//     style={{flex: 1}}
-// />
 export default HomeScreen;
 
 const style = StyleSheet.create({
@@ -125,19 +95,28 @@ const style = StyleSheet.create({
     },
     userRouteView: {
         width: '95%',
-        // backgroundColor: globalStyles.colors.mediumBlack,
+        backgroundColor: colors.mediumBlack,
         margin: 20,
         borderRadius: 10,
-        flex: 0.3,
+        flex: 0.25,
         padding: 10
     },
-    userRouteTitle:{
+    userRouteTitle: {
         fontSize: 20,
-        // fontColor: globalStyles.colors.lightText
+        color: colors.lightText
     },
     userRouteDetails: {
         fontSize: 17,
-        // color: globalStyles.colors.lightText
+        color: colors.lightText
     },
-
+    userRouteAccent: {
+        fontSize: 17,
+        color: colors.primary
+    },
+    safeArea: {
+        backgroundColor: '#191919',
+        height: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
+    }
 })

@@ -23,7 +23,13 @@ import {
     Roboto_900Black_Italic,
 } from '@expo-google-fonts/roboto'
 
-
+export const colors = {
+    primary: '#FDAF01',
+    darkBlack: '#191919',
+    mediumBlack: '#252525',
+    lightBlack: '#413F3F',
+    lightText: '#C1C1C1'
+}
 export const globalStyles = StyleSheet.create({
     screenTitle: {
         color: 'white',
