@@ -38,13 +38,17 @@ function Content({navigation}) {
     return (
         <SafeAreaView style={style.safeArea}>
             <Header title={"Home"}/>
-            <View style={{flex: 0.25, flexDirection: 'row'}}>
-                <ImageButton image={require("../../assets/images/steeringwheel.jpg")}
+            <View style={{flex: 0.28, flexDirection: 'row'}}>
+                <ImageButton image={require("../../assets/images/steeringwheel-small.jpg")}
                              title={"Driving Somewhere"}
-                             onPress={() => navigation.navigate("PostRoute")}/>
-                <ImageButton image={require("../../assets/images/backpacking.jpg")} title={"Hitching Somewhere"}/>
+                             onPress={() => navigation.navigate("PostRoute")}
+                />
+                <ImageButton image={require("../../assets/images/backpacking-small.jpeg")}
+                             title={"Hitching Somewhere"}
+                             onPress={()=>navigation.navigate("Map")}
+                />
             </View>
-            {userRoute ? <UserRoute userRoute={userRoute} setUserRoute={setUserRoute}/> : null}
+            {userRoute ? <UserRoute userRoute={userRoute} setUserRoute={setUserRoute} navigation={navigation}/> : null}
         </SafeAreaView>
     );
 }
@@ -53,10 +57,11 @@ function Content({navigation}) {
  * user route information plus buttons to edit and finish the route
  * @param userRoute - user route information
  * @param setUserRoute - function to set the state of user route
+ * @param navigation - navigation component
  * @returns {JSX.Element}
  * @constructor
  */
-const UserRoute = ({userRoute, setUserRoute}) => {
+const UserRoute = ({userRoute, setUserRoute, navigation}) => {
     return (
         <View style={style.userRouteView}>
             <Text style={style.userRouteTitle}>Your current route: </Text>
@@ -68,9 +73,15 @@ const UserRoute = ({userRoute, setUserRoute}) => {
             </Text>
 
             <View style={{flexDirection: 'row'}}>
-                <CustomButton flex={0.5} color={"transparent"} text={"Edit"}
-                              buttonStyle={{borderWidth: 1, borderColor: 'white',}}/>
-                <CustomButton flex={0.5} color={colors.primary} text={"Finish"}
+                <CustomButton flex={0.5}
+                              color={"transparent"}
+                              text={"Edit"}
+                              buttonStyle={{borderWidth: 1, borderColor: 'white',}}
+                              onPress={()=>navigation.navigate("PostRoute")}
+                />
+                <CustomButton flex={0.5}
+                              color={colors.primary}
+                              text={"Finish"}
                               onPress={() => {
                                   deleteRoute()
                                   setUserRoute(null)

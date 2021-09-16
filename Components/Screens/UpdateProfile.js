@@ -5,6 +5,7 @@ import CustomButton from "../CustomButton";
 import * as ImagePicker from 'expo-image-picker'
 import {updateUserProfile, uploadImage} from "../API/RouteAPI";
 import {colors} from "../../Styles/GlobalStyles"
+import ModalLoader from "../ModalLoader";
 
 
 /**
@@ -16,6 +17,7 @@ import {colors} from "../../Styles/GlobalStyles"
  */
 function UpdateProfile({route, navigation}) {
     const [bio, setBio] = useState(route.params.bio);
+    const [isLoading, setIsLoading] = useState(false);
     return (
         <SafeAreaView style={{backgroundColor: colors.darkBlack, height: '100%'}}>
             <Header title={"Update Profile"}/>
@@ -31,33 +33,41 @@ function UpdateProfile({route, navigation}) {
                 <CustomButton flex={0.2} text={"Update"}
                               onPress={() => {
                                   Keyboard.dismiss();
-                                  updateUserProfile({"profile.bio": bio}) //doesn't return anything so not .then()
+                                  updateUserProfile({"profile.bio": bio}).then(()=>setIsLoading(false)) //doesn't return anything so not .then()
+                                  setIsLoading(true)
                               }}
                               buttonStyle={styles.buttonStyle}/>
                 <CustomButton flex={0.2}
                               text={"Change Cover Photo"}
-                              onPress={() => ChangeImage("covers")}
-                              buttonStyle={[styles.buttonStyle, {marginBottom: 10}]}/>
+                              onPress={() => {
+                                  ChangeImage("covers", setIsLoading)
+                                  setIsLoading(true)
+                              }}
+                              buttonStyle={styles.buttonStyle}/>
                 <CustomButton flex={0.2}
                               text={"Change Profile Photo"}
-                              onPress={() => ChangeImage("avatars")}
-                              buttonStyle={[styles.buttonStyle, {marginBottom: 10}]}/>
+                              onPress={() => {
+                                  ChangeImage("avatars", setIsLoading)
+                                  setIsLoading(true)
+                              }}
+                              buttonStyle={styles.buttonStyle}/>
 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 0.2, flexDirection: 'row', marginBottom: 0}}>
                     <CustomButton text={"Cancel"}
                                   onPress={() => navigation.navigate("Profile")}
-                                  buttonStyle={{borderWidth: "2", height: 50, marginBottom: 10}}/>
+                                  buttonStyle={{borderWidth: 2, height: 50, marginBottom: 10}}/>
                     <CustomButton text={"Continue"}
                                   onPress={() => navigation.navigate("Profile")}
                                   textStyle={{color: colors.primary}}
                                   buttonStyle={{
-                                      borderWidth: "2",
+                                      borderWidth: 2,
                                       borderColor: colors.primary,
                                       height: 50,
                                       marginBottom: 10
                                   }}/>
                 </View>
             </View>
+            <ModalLoader isLoading={isLoading}/>
         </SafeAreaView>
     );
 }
@@ -80,14 +90,20 @@ const UselessTextInput = (props) => {
 
 /**
  * gets user image and uploads it to firebase
- * @param folder
+ * @param folder - the folder the image file to change is in
+ * @param setIsLoading - state setter for loading screens.
  * @constructor
  */
-const ChangeImage = (folder) => {
+const ChangeImage = (folder, setIsLoading) => {
     SelectImage().then((uri) => {
         UploadImage(uri, folder).then(() => {
+            setIsLoading(false)
             alert("Photo Changed!")
-        }).catch(error => console.log(error.message));
+            console.log("Photo Changed!")
+        }).catch(error => {
+            setIsLoading(false)
+            alert(error.message)
+        });
     });
 }
 

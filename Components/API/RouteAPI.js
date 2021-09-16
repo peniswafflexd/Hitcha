@@ -5,6 +5,10 @@ import 'firebase/firestore'
 import 'firebase/auth'
 import 'firebase/storage'
 import {setUser} from "../../App";
+import {error} from "react-native-gifted-chat/lib/utils";
+import * as FileSystem from "expo-file-system";
+import {deleteFileFromURI} from "../CustomFastImage";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBrUjZ4_OFibulCxJW4p03DVMNd1UANxOM",
@@ -121,7 +125,6 @@ export const getRoutes = async () => {
 
 export const uploadImage = async (folder, blob) => {
     const ref = storage.ref().child(folder + "/" + auth.currentUser.uid);
-// Upload blob to Firebase
     const task = await ref
         .put(blob)
         .catch(error => console.log(error.message));
@@ -138,6 +141,7 @@ export const uploadImage = async (folder, blob) => {
             console.log(error.message)
         });
     }
+    deleteFileFromURI(downloadURL)
     await updateUserProfile(data);
 }
 
@@ -189,7 +193,7 @@ export const updateUserProfile = async (updateObj) => {
     await db
         .collection("Users")
         .doc(auth?.currentUser?.uid)
-        .update(updateObj);
+        .update(updateObj)
 }
 
 const getRouteInformation = async (userIdString) => {

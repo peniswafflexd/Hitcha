@@ -17,16 +17,19 @@ import ModalLoader from "../ModalLoader";
  * @param textStyle - style of being displayed above the input
  * @param flex - vertical flex for container to use
  * @param onPress - call back function for tapping a completion
+ * @param zIndex - the zIndex for the component
  * @returns {JSX.Element}
  * @constructor
  */
-const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
-    return (<View style={{flex: flex}}>
+const GooglePlacesInput = ({text, textStyle, flex, onPress, zIndex}) => {
+    return (<View style={{flex: flex, position: 'fixed', zIndex: zIndex}}>
             <Text style={{color: 'white', ...textStyle}}>{text}</Text>
             <GooglePlacesAutocomplete
                 placeholder='Enter Location'
                 onPress={onPress}
+                minLength={3}
                 fetchDetails={true}
+                enablePoweredByContainer={false}
                 GooglePlacesSearchQuery={{
                     // gets the place name and coordinate information from google maps API
                     types: 'gecode'
@@ -93,6 +96,7 @@ function PostRouteScreen({navigation}) {
                 {(!useGPS) ? <GooglePlacesInput
                     text={"Where are you starting?"}
                     flex={0.2}
+                    zIndex={100}
                     onPress={(data, details = null) => {
                         // sets the start route locations
                         setRouteLocations({
@@ -113,6 +117,7 @@ function PostRouteScreen({navigation}) {
                 <GooglePlacesInput
                     text={"Where are you going?"}
                     flex={0.2}
+                    zIndex={99}
                     onPress={(data, details = null) => {
                         // add route data to the routeLocations state
                         setRouteLocations({
@@ -142,6 +147,17 @@ function PostRouteScreen({navigation}) {
     );
 }
 
+/**
+ * takes coordinates from GPS location and uses googles geocode API to
+ * get the address data from it. Then sets the startLocation in the
+ * routeLocation data
+ * @param location - GPS coordinates
+ * @param setRouteLocations - function to set routeLocation data
+ * @param routeLocations - routeLocationData
+ * @param isLoading - boolean for if the location data is back yet
+ * @returns {JSX.Element|null}
+ * @constructor
+ */
 const SetLocationFromGPS = ({location, setRouteLocations, routeLocations, isLoading}) => {
     if(isLoading) return <ModalLoader isLoading={isLoading}/>
     Geocoder.init("AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8", {language: "en"})
@@ -196,6 +212,9 @@ const style = StyleSheet.create({
 })
 
 const googlePlacesStyle = {
+    container: {
+      flex: 0
+    },
     textInputContainer: {
         width: '75%',
         marginTop: 10
@@ -210,6 +229,7 @@ const googlePlacesStyle = {
     listView: {
         width: '89%',
         borderRadius: 10,
+        height: 100
     },
     row: {
         backgroundColor: colors.mediumBlack,

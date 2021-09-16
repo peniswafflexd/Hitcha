@@ -4,6 +4,7 @@ import {GiftedChat} from "react-native-gifted-chat";
 import {auth, db, getConversationID, sendMessage} from "../API/RouteAPI";
 import ProfileModal from "../ProfileModal";
 import {colors} from "../../Styles/GlobalStyles"
+import CustomFastImage from "../CustomFastImage";
 
 
 /**
@@ -18,7 +19,7 @@ function MessagesScreen({navigation, memberData, ...props}) {
     return (
         <SafeAreaView style={style.safeArea}>
             <View style={style.header}>
-                <Image source={{uri: memberData.photo}} style={style.profileImage}/>
+                <CustomFastImage source={{uri: memberData.photo}} style={style.profileImage}/>
                 <Text style={style.username}>{memberData.name.split(' ')[0]}</Text>
                 <View style={{flex: 0.1, right: 10, zIndex: 100}}>
                     <Pressable onPress={navigation}>
@@ -124,7 +125,7 @@ const style = StyleSheet.create({
     messageIcon: {
         width: 32,
         height: 32,
-        right: 0,
+        right: 10,
         tintColor: colors.primary,
         zIndex: 100
     },

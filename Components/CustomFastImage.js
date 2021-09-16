@@ -15,6 +15,17 @@ async function findImageInCache(uri) {
     }
 }
 
+const getFileNameFromURI = (uri) => {
+   return uri
+        .replaceAll('/','')
+        .replaceAll('.', '')
+        .replaceAll(':', '')
+        .replaceAll('%', '')
+        .replaceAll('&', '')
+        .replaceAll('=','')
+        .replaceAll('-','')
+}
+
 async function cacheImage(uri, cacheUri, callback) {
     try {
         const downloadImage = FileSystem.createDownloadResumable(
@@ -42,14 +53,7 @@ const CustomFastImage = (props) => {
         source: { uri },
         style,
     } = props;
-    let cacheKey = uri
-        .replaceAll('/','')
-        .replaceAll('.', '')
-        .replaceAll(':', '')
-        .replaceAll('%', '')
-        .replaceAll('&', '')
-        .replaceAll('=','')
-        .replaceAll('-','')
+    let cacheKey = getFileNameFromURI(uri)
 
     const isMounted = useRef(true);
     const [imgUri, setUri] = useState("");
@@ -87,4 +91,9 @@ const CustomFastImage = (props) => {
         </>
     );
 };
+
+export const deleteFileFromURI = (uri) => {
+    let cacheKey = getFileNameFromURI(uri)
+    FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${cacheKey}`, {idempotent: true})
+}
 export default CustomFastImage;

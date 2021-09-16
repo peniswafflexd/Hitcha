@@ -4,6 +4,7 @@ import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
 import {getAllConversationUsers, readMessage} from "./API/RouteAPI";
 import {colors} from "../Styles/GlobalStyles"
+import CustomFastImage from "./CustomFastImage";
 
 /**
  * sets whether the conversation modal is visible
@@ -110,7 +111,7 @@ const ConversationList = ({setMemberData, navigation}) => {
             navigation();
         }}>
             <View style={styles.conversationRow}>
-                <Image style={{height: 60, width: 60, borderRadius: 30, flex: 0.2}} source={{uri: c.data().photoURL}}/>
+                <CustomFastImage style={{height: 60, width: 60, borderRadius: 30, flex: 0.2}} source={{uri: c.data().photoURL}}/>
                 <View style={{flexDirection: 'column', flex: 0.8, padding: 5, overflow: 'hidden'}}>
                     <Text style={[styles.memberName, {color: c.data().unread ? colors.primary : 'white'}]}>
                         {c.data().name}
