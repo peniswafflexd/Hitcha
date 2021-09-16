@@ -5,6 +5,8 @@ import {ProfileSnapshot} from "./API/RouteAPI";
 import {placeHolderProfilePhoto} from "./Screens/ProfileScreen";
 import CustomButton from "./CustomButton";
 import {colors} from "../Styles/GlobalStyles"
+import CustomFastImage from "./CustomFastImage";
+import ModalLoader from "./ModalLoader";
 
 /**
  * A modal that shows a basic outline of a users profile
@@ -16,7 +18,7 @@ import {colors} from "../Styles/GlobalStyles"
  * @constructor
  */
 const ProfileModal = ({modalVisible, setModalVisible, memberID, setMessageScreen}) => {
-    const [userProfileData, setUserProfileData] = useState({});
+    const [userProfileData, setUserProfileData] = useState(null);
     const [animationTiming, setAnimationTiming] = useState(100)
     ProfileSnapshot(setUserProfileData, memberID)
 
@@ -54,11 +56,11 @@ const ProfileModal = ({modalVisible, setModalVisible, memberID, setMessageScreen
  * @constructor
  */
 const ProfilePhoto = ({profileData}) => {
-    const [profileImage, setProfileImage] = useState(placeHolderProfilePhoto);
-    if (profileData?.profile?.hasProfile && profileImage !== profileData?.profile?.profileURL) setProfileImage(profileData?.profile?.profileURL)
+    if(!profileData?.profile) return <ModalLoader isLoading={true}/>
     return (
         <View style={{flex: 0.3, width: '100%', alignItems: 'center', zIndex: 10}}>
-            <Image source={{uri: profileImage}} style={styles.profileImage}/>
+            {/*<Image source={{uri: profileImage}} style={styles.profileImage}/>*/}
+            <CustomFastImage source={{uri: profileData?.profile?.profileURL}} style={styles.profileImage}/>
         </View>
     )
 }

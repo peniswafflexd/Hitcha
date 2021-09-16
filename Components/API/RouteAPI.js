@@ -64,8 +64,10 @@ const createNewUserDocument = (user, name) => {
         profile: {
             firstname: name,
             lastname: "",
-            hasCover: false,
-            hasProfile: false,
+            hasCover: true,
+            hasProfile: true,
+            profileURL: "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/placeholder-profile_1.png",
+            coverURL: "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg",
             bio: "I'm a new user who hasn't updated their bio yet!"
         }
     }
@@ -141,12 +143,11 @@ export const uploadImage = async (folder, blob) => {
 
 export const UpdatedRoutes = (routes, setRoutes) => {
     useEffect(() => {
-        const subscriber = db.collection("Routes")
+        const subscriber = db
+            .collection("Routes")
             .onSnapshot(querySnapshot => {
-                    let changes = querySnapshot.docChanges();
-                    setRoutes(changes
-                        .filter((change) => change.type === 'added')
-                        .map((change) => change.doc));
+                    let docs = querySnapshot.docs
+                    setRoutes(docs)
                 },
                 error => {
                     console.log(error)
@@ -250,13 +251,8 @@ export const getAllConversationUsers = (conversations, setConversations) => {
             .doc(auth?.currentUser?.uid)
             .collection("Conversations")
             .onSnapshot(querySnapshot => {
-                    let changes = querySnapshot.docChanges();
-                    let newItems = changes
-                        .filter((change) => change._.type === 'added')
-                        .map((change) => change.doc)
-                    // console.log(newItems[0].data().conversationID);
-                    setConversations(newItems)
-
+                    let conversations = querySnapshot.docs
+                    setConversations(conversations)
                 },
                 error => {
                     console.log(error)
@@ -269,8 +265,6 @@ export const getAllConversationUsers = (conversations, setConversations) => {
 }
 
 export const getUserProfileData = (userID, setProfileData) => {
-
-
     useEffect(() => {
         const subscriber = () => {
             db
@@ -334,15 +328,27 @@ export const readMessage = (memberID) => {
         })
 }
 
-export const getUserRoute = async (setUserRoute, memberID = auth?.currentUser?.uid) => {
-   const snapshot = db
-        .collection('Routes')
-        .doc(memberID)
-        .get()
+export const getUserRoute = (setUserRoute, memberID = auth?.currentUser?.uid) => {
+    useEffect(() => {
+        const subscriber = db
+            .collection("Routes")
+            .doc(memberID)
+            .onSnapshot(documentSnapshot => {
+                setUserRoute(documentSnapshot.data());
+            }, error => {
+                console.log(error)
+            })
 
-     setUserRoute((await snapshot).data())
+        return () => {
+            subscriber()
+        }
+    }, []);
 }
 
 export const deleteRoute = (memberID = auth?.currentUser?.uid) => {
-    db.collection("Routes").doc(memberID).delete().then(() => alert("Route Removed"))
+    db
+        .collection("Routes")
+        .doc(memberID)
+        .delete()
+        .then(() => alert("Route Removed"))
 }

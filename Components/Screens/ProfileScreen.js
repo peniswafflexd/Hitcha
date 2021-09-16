@@ -6,6 +6,8 @@ import CustomButton from "../CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
 import UpdateProfile from "./UpdateProfile";
 import {colors} from "../../Styles/GlobalStyles"
+import CustomFastImage from "../CustomFastImage";
+import ModalLoader from "../ModalLoader";
 
 // placeholder images if the user doesn't have their own, or they cant be found.
 export const placeHolderCoverPhoto = "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg"
@@ -34,9 +36,8 @@ function ProfileScreen({navigation}) {
  * @constructor
  */
 const Screen = ({navigation}) => {
-    const [profileData, setProfileData] = useState({});
+    const [profileData, setProfileData] = useState(null);
     ProfileSnapshot(setProfileData);
-    if (profileData === null) return null;
     return (
         <SafeAreaView style={styles.safeArea}>
             <Header title={"Profile"}/>
@@ -55,15 +56,19 @@ const Screen = ({navigation}) => {
  * @constructor
  */
 const ProfileImages = ({profileData}) => {
-    const [profileImage, setProfileImage] = useState(placeHolderProfilePhoto);
-    const [coverImage, setCoverImage] = useState(placeHolderCoverPhoto);
-    //if user photos exist then use them, otherwise use the placeholder images.
-    if (profileData?.profile?.hasProfile && profileImage !== profileData?.profile?.profileURL) setProfileImage(profileData?.profile?.profileURL)
-    if (profileData?.profile?.hasCover && coverImage !== profileData?.profile?.coverURL) setCoverImage(profileData?.profile?.coverURL)
+    if (!profileData?.profile) return <ModalLoader isLoading={true}/>
+    let coverImage = profileData.profile.coverURL
+    let profileImage = profileData.profile.profileURL
     return (
         <View style={{flex: 0.3, width: '100%', alignItems: 'center', zIndex: 10}}>
-            <Image source={{uri: coverImage}} style={{width: '100%', height: '100%'}}/>
-            <Image source={{uri: profileImage}} style={styles.profilePhoto}/>
+            <CustomFastImage
+                source={{uri: coverImage}}
+                style={{width: '100%', height: '100%'}}
+            />
+            <CustomFastImage
+                source={{uri: profileImage}}
+                style={styles.profilePhoto}
+            />
         </View>
     )
 }

@@ -11,7 +11,10 @@ import {Switch, Text, View, StyleSheet} from "react-native";
  */
 export const CustomSwitch = ({text, style, callback}) => {
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = () => {
+        setIsEnabled(previousState => !previousState);
+        callback()
+    }
 
     return (
         <View style={[styles.switchView, {...style}]}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {addRoute, auth} from '../API/RouteAPI'
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -6,6 +6,9 @@ import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {CustomSwitch} from "../CustomSwitch";
 import {colors} from "../../Styles/GlobalStyles"
+import * as Location from 'expo-location';
+import Geocoder from "react-native-geocoding"
+import ModalLoader from "../ModalLoader";
 
 
 /**
@@ -40,6 +43,7 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
     );
 }
 
+
 /**
  * A screen for posting a route, takes input from google places auto-complete
  * input and uses it to get the coordinates of the places chosen.
@@ -48,6 +52,10 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
  * @constructor
  */
 function PostRouteScreen({navigation}) {
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [useGPS, setUseGPS] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [routeLocations, setRouteLocations] = useState({
         Name: auth?.currentUser?.displayName,
         Photo: auth?.currentUser?.photoURL,
@@ -60,11 +68,29 @@ function PostRouteScreen({navigation}) {
             lng: 0
         }
     })
+
+    useEffect(() => {
+        (async () => {
+            setIsLoading(true)
+            let {status} = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+            setIsLoading(false)
+        })();
+    }, []);
+
+    if (errorMsg) {
+        alert(errorMsg);
+    }
     return (
         <SafeAreaView style={style.safeArea}>
             <Header title={"Post a Route"}/>
             <View style={{flex: 0.85, flexDirection: 'column', padding: 20}}>
-                <GooglePlacesInput
+                {(!useGPS) ? <GooglePlacesInput
                     text={"Where are you starting?"}
                     flex={0.2}
                     onPress={(data, details = null) => {
@@ -75,7 +101,12 @@ function PostRouteScreen({navigation}) {
                             StartName: details.address_components[0].long_name
                         })
                     }}
-                />
+                /> : <SetLocationFromGPS
+                        location={location}
+                        setRouteLocations={setRouteLocations}
+                        routeLocations={routeLocations}
+                        isLoading={isLoading}
+                />}
 
                 <IconWithText icon={require("../../assets/icons/add.png")} text={"add via destination"}/>
 
@@ -91,7 +122,8 @@ function PostRouteScreen({navigation}) {
                         })
                     }}
                 />
-                <CustomSwitch text={"Use GPS Location Instead"} style={{marginTop: 20}}/>
+                <CustomSwitch text={"Use GPS Location Instead"} style={{marginTop: 20}}
+                              callback={() => setUseGPS(!useGPS)}/>
                 <CustomSwitch text={"Only show my route to users with at least one ride"}/>
 
             </View>
@@ -108,6 +140,29 @@ function PostRouteScreen({navigation}) {
             </View>
         </SafeAreaView>
     );
+}
+
+const SetLocationFromGPS = ({location, setRouteLocations, routeLocations, isLoading}) => {
+    if(isLoading) return <ModalLoader isLoading={isLoading}/>
+    Geocoder.init("AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8", {language: "en"})
+    useEffect(() => {
+        Geocoder.from(location.coords.latitude, location.coords.longitude)
+            .then(json => {
+                let addressComponent = json.results[0].address_components[2].long_name
+                setRouteLocations({
+                    ...routeLocations,
+                    Start: {
+                        lat: location.coords.latitude,
+                        lng: location.coords.longitude
+                    },
+                    StartName: addressComponent
+                })
+            })
+            .catch(error =>
+                console.warn(error)
+            );
+    }, [])
+    return null
 }
 
 /**
@@ -140,21 +195,21 @@ const style = StyleSheet.create({
 
 })
 
-const googlePlacesStyle =  {
+const googlePlacesStyle = {
     textInputContainer: {
         width: '75%',
-            marginTop: 10
+        marginTop: 10
     },
     textInput: {
         height: 38,
-            color: colors.lightText,
-            fontSize: 16,
-            backgroundColor: '#413F3F',
-            borderRadius: 10,
+        color: colors.lightText,
+        fontSize: 16,
+        backgroundColor: '#413F3F',
+        borderRadius: 10,
     },
     listView: {
         width: '89%',
-            borderRadius: 10,
+        borderRadius: 10,
     },
     row: {
         backgroundColor: colors.mediumBlack,

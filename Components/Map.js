@@ -7,6 +7,7 @@ import CustomButton from "./CustomButton";
 import {MessageModal} from "./MessageIcon";
 import ProfileModal from "./ProfileModal";
 import {colors} from "../Styles/GlobalStyles"
+import CustomFastImage from "./CustomFastImage";
 
 
 /**
@@ -120,7 +121,8 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
         <View style={{flexDirection: 'column', width: "100%", height: '100%'}}>
 
             <View style={{flex: 0.25, flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>
+                {/*<Image style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>*/}
+                <CustomFastImage style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>
                 <Text style={styles.routeOwnerText}>{routeInformation.Name}</Text>
                 <Pressable style={{flex: 0.1, alignSelf: 'flex-start'}} onPress={() => setRouteDisplay(false)}>
                     <Image source={require('../assets/icons/close.png')}
@@ -153,7 +155,9 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
                           initialScreenConversation={false}/>
             <ProfileModal modalVisible={showProfile}
                           setModalVisible={setShowProfile}
-                          setMessageScreen={setMessageScreen}/>
+                          setMessageScreen={setMessageScreen}
+                          memberID={memberData.ID}
+            />
         </View>
     )
 }
