@@ -5,8 +5,18 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {CustomSwitch} from "../CustomSwitch";
+import {colors} from "../../Styles/GlobalStyles"
 
 
+/**
+ * Re-usable component for google places auto-complete box.
+ * @param text - text to be displayed above the input
+ * @param textStyle - style of being displayed above the input
+ * @param flex - vertical flex for container to use
+ * @param onPress - call back function for tapping a completion
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
     return (<View style={{flex: flex}}>
             <Text style={{color: 'white', ...textStyle}}>{text}</Text>
@@ -18,7 +28,7 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
                     // gets the place name and coordinate information from google maps API
                     types: 'gecode'
                 }}
-                textInputProps={{placeholderTextColor: '#C1C1C1'}}
+                textInputProps={{placeholderTextColor: colors.lightText}}
                 query={{
                     // API KEY
                     key: 'AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8',
@@ -30,6 +40,13 @@ const GooglePlacesInput = ({text, textStyle, flex, onPress}) => {
     );
 }
 
+/**
+ * A screen for posting a route, takes input from google places auto-complete
+ * input and uses it to get the coordinates of the places chosen.
+ * @param navigation
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function PostRouteScreen({navigation}) {
     const [routeLocations, setRouteLocations] = useState({
         Name: auth?.currentUser?.displayName,
@@ -84,18 +101,28 @@ function PostRouteScreen({navigation}) {
                               onPress={() => navigation.goBack()}
                 />
                 <View style={{flex: 0.4, height: '100%'}}/>
-                <CustomButton color={'#FDAF01'} text={"Continue"} onPress={() => addRoute(routeLocations)}/>
+                <CustomButton color={colors.primary} text={"Continue"} onPress={() => {
+                    addRoute(routeLocations)
+                    navigation.goBack()
+                }}/>
             </View>
         </SafeAreaView>
     );
 }
 
+/**
+ * re-usable component for an icon on the left with text on the right.
+ * @param icon - icon to be used (must use require("path/to/icon.png") syntax)
+ * @param text - text to be places on right of icon.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const IconWithText = ({icon, text}) => {
     return (
         <View style={{justifyContent: 'left', alignItems: 'center', flexDirection: "row", flex: 0.15}}>
             <Image source={icon}
                    resizeMode={'contain'}
-                   style={{tintColor: '#FDAF01', width: 32, height: 32, marginRight: 10}}/>
+                   style={{tintColor: colors.primary, width: 32, height: 32, marginRight: 10}}/>
             <Text style={{color: 'white'}}>
                 {text}
             </Text>
@@ -107,11 +134,9 @@ export default PostRouteScreen;
 
 const style = StyleSheet.create({
     safeArea: {
-        backgroundColor: '#191919',
+        backgroundColor: colors.darkBlack,
         height: '100%'
     },
-
-
 
 })
 
@@ -122,7 +147,7 @@ const googlePlacesStyle =  {
     },
     textInput: {
         height: 38,
-            color: '#C1C1C1',
+            color: colors.lightText,
             fontSize: 16,
             backgroundColor: '#413F3F',
             borderRadius: 10,
@@ -132,9 +157,9 @@ const googlePlacesStyle =  {
             borderRadius: 10,
     },
     row: {
-        backgroundColor: '#252525',
+        backgroundColor: colors.mediumBlack,
     },
     description: {
-        color: '#C1C1C1'
+        color: colors.lightText
     }
 }

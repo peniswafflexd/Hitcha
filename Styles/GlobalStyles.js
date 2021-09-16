@@ -43,11 +43,11 @@ export const globalStyles = StyleSheet.create({
         // fontFamily: 'Roboto-Thin'
     },
     // colors: {
-    //     primary: '#FDAF01',
-    //     darkBlack: '#191919',
-    //     mediumBlack: '#252525',
+    //     primary: colors.primary,
+    //     darkBlack: colors.darkBlack,
+    //     mediumBlack: colors.mediumBlack,
     //     lightBlack: '#413F3F',
-    //     lightText: '#C1C1C1'
+    //     lightText: colors.lightText
     //
     // }
 });

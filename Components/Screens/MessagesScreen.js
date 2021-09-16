@@ -3,8 +3,17 @@ import {Image, Pressable, SafeAreaView, Text, View, StyleSheet} from 'react-nati
 import {GiftedChat} from "react-native-gifted-chat";
 import {auth, db, getConversationID, sendMessage} from "../API/RouteAPI";
 import ProfileModal from "../ProfileModal";
+import {colors} from "../../Styles/GlobalStyles"
 
 
+/**
+ * Chat screen for messaging between members.
+ * @param navigation
+ * @param memberData - data for the member that is being messaged
+ * @param props - TODO: check if this is still needed
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function MessagesScreen({navigation, memberData, ...props}) {
     return (
         <SafeAreaView style={style.safeArea}>
@@ -26,12 +35,20 @@ function MessagesScreen({navigation, memberData, ...props}) {
     )
 }
 
+/**
+ * logic for the messages that are being sent and received
+ * @param memberData - data for the member that is being messaged
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Messages = ({memberData}) => {
     //if the conversationID isn't passed through then determine the conversationID from the member ID
     let finalConversationID = (memberData?.conversationID) ? memberData?.conversationID : getConversationID(memberData?.ID, memberData?.name, memberData?.photo)
     const [messages, setMessages] = useState([]);
+    //this is used for when the user clicks on the members avatar, so it will show their profile.
     const [ProfileModalVisible, setProfileModalVisible] = useState(false);
 
+    //callback for when the send button is pressed.
     const onSend = useCallback((conversationID, memberID, messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         sendMessage(messages, conversationID, memberID);
@@ -78,7 +95,7 @@ export default MessagesScreen;
 
 const style = StyleSheet.create({
     safeArea: {
-        backgroundColor: '#191919',
+        backgroundColor: colors.darkBlack,
         top: 0,
         height: '100%',
         width: '100%'
@@ -93,7 +110,7 @@ const style = StyleSheet.create({
         height: 80,
         borderRadius: 40,
         borderWidth: 2,
-        borderColor: '#252525',
+        borderColor: colors.mediumBlack,
         margin: 10,
         marginTop: 30
     },
@@ -108,7 +125,7 @@ const style = StyleSheet.create({
         width: 32,
         height: 32,
         right: 0,
-        tintColor: '#FDAF01',
+        tintColor: colors.primary,
         zIndex: 100
     },
 

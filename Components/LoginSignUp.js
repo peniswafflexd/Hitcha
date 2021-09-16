@@ -5,6 +5,11 @@ import SignInScreen from "./Screens/SignInScreen";
 
 const Stack = createStackNavigator();
 
+/**
+ * just a navigation component to switch between the login and signup screens.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const LoginSignUp = () => {
     return (
     <Stack.Navigator headerMode={false} initialRouteName={"Sign In"}>

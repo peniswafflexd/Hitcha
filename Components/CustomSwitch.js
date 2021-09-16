@@ -1,7 +1,15 @@
 import React, {useState} from "react";
 import {Switch, Text, View, StyleSheet} from "react-native";
 
-export const CustomSwitch = ({text, style}) => {
+/**
+ * custom switch component
+ * @param text - text to go next to the switch
+ * @param style - style props to pass to the view of the component
+ * @param callback - function to callback when value of switch changed. (not implemented)
+ * @returns {JSX.Element}
+ * @constructor
+ */
+export const CustomSwitch = ({text, style, callback}) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -26,7 +34,6 @@ export const CustomSwitch = ({text, style}) => {
 
 const styles = StyleSheet.create({
     switchView: {
-        // justifyContent: 'left',
         alignItems: 'center',
         flexDirection: "row",
         flex: 0.15,

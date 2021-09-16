@@ -1,10 +1,73 @@
 import React, {useState} from 'react';
-import {Alert, SafeAreaView, Text, TextInput, View, Keyboard} from 'react-native';
+import {Keyboard, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import * as ImagePicker from 'expo-image-picker'
 import {updateUserProfile, uploadImage} from "../API/RouteAPI";
+import {colors} from "../../Styles/GlobalStyles"
 
+
+/**
+ * screen for updating profile information such as, photos and bio
+ * @param route - parameters passed from another screen through navigation.
+ * @param navigation
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function UpdateProfile({route, navigation}) {
+    const [bio, setBio] = useState(route.params.bio);
+    return (
+        <SafeAreaView style={{backgroundColor: colors.darkBlack, height: '100%'}}>
+            <Header title={"Update Profile"}/>
+            <View style={{flex: 0.85, flexDirection: 'column', padding: 20}}>
+                <Text style={{color: 'white'}}>Update your bio: </Text>
+                <UselessTextInput
+                    multiline
+                    numberOfLines={4}
+                    onChangeText={text => setBio(text)}
+                    value={bio}
+                    style={styles.multilineInput}
+                />
+                <CustomButton flex={0.2} text={"Update"}
+                              onPress={() => {
+                                  Keyboard.dismiss();
+                                  updateUserProfile({"profile.bio": bio}) //doesn't return anything so not .then()
+                              }}
+                              buttonStyle={styles.buttonStyle}/>
+                <CustomButton flex={0.2}
+                              text={"Change Cover Photo"}
+                              onPress={() => ChangeImage("covers")}
+                              buttonStyle={[styles.buttonStyle, {marginBottom: 10}]}/>
+                <CustomButton flex={0.2}
+                              text={"Change Profile Photo"}
+                              onPress={() => ChangeImage("avatars")}
+                              buttonStyle={[styles.buttonStyle, {marginBottom: 10}]}/>
+
+                <View style={{flexDirection: 'row'}}>
+                    <CustomButton text={"Cancel"}
+                                  onPress={() => navigation.navigate("Profile")}
+                                  buttonStyle={{borderWidth: "2", height: 50, marginBottom: 10}}/>
+                    <CustomButton text={"Continue"}
+                                  onPress={() => navigation.navigate("Profile")}
+                                  textStyle={{color: colors.primary}}
+                                  buttonStyle={{
+                                      borderWidth: "2",
+                                      borderColor: colors.primary,
+                                      height: 50,
+                                      marginBottom: 10
+                                  }}/>
+                </View>
+            </View>
+        </SafeAreaView>
+    );
+}
+
+/**
+ * for multiline input
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const UselessTextInput = (props) => {
     return (
         <TextInput
@@ -15,57 +78,24 @@ const UselessTextInput = (props) => {
     );
 }
 
-function UpdateProfile({route, navigation}) {
-    const [bio, setBio] = useState(route.params.bio);
-    return (
-        <SafeAreaView style={{backgroundColor: '#191919', height: '100%'}}>
-            <Header title={"Update Profile"}/>
-            <View style={{flex: 0.85, flexDirection: 'column', padding: 20}}>
-                <Text style={{color: 'white'}}>Update your bio: </Text>
-                <UselessTextInput
-                    multiline
-                    numberOfLines={4}
-                    onChangeText={text => setBio(text)}
-                    value={bio}
-                    style={{padding: 10, backgroundColor: '#4D4B4B', color: "#C1C1C1", flex: 0.2, borderRadius: 15, marginTop: 5}}
-                />
-                <CustomButton flex={0.2} text={"Update"} onPress={() => {
-                    Keyboard.dismiss();
-                    updateUserProfile({"profile.bio": bio})
-                }}
-                              buttonStyle={{borderWidth: "2" , borderColor: 'white', height: 50}}/>
-                <CustomButton flex={0.2} text={"Change Cover Photo"} onPress={() => ChangeImage("covers")}
-                              buttonStyle={{borderWidth: "2" , borderColor: 'white', height: 50, marginBottom: 10}}/>
-                <CustomButton flex={0.2} text={"Change Profile Photo"} onPress={() => ChangeImage("avatars")}
-                              buttonStyle={{borderWidth: "2", borderColor: 'white', height: 50, marginBottom: 10}}/>
-                <View style={{flexDirection: 'row'}}>
-                    <CustomButton text={"Cancel"} onPress={() => navigation.navigate("Profile")}
-                                  buttonStyle={{borderWidth: "2", height: 50, marginBottom: 10}}/>
-                    <CustomButton text={"Continue"} onPress={() => navigation.navigate("Profile")}
-                                  textStyle={{color: '#FDAF01'}}
-                                  buttonStyle={{
-                                      borderWidth: "2",
-                                      borderColor: '#FDAF01',
-                                      height: 50,
-                                      marginBottom: 10
-                                  }}/>
-                </View>
-            </View>
-        </SafeAreaView>
-    );
-}
-
+/**
+ * gets user image and uploads it to firebase
+ * @param folder
+ * @constructor
+ */
 const ChangeImage = (folder) => {
     SelectImage().then((uri) => {
         UploadImage(uri, folder).then(() => {
-            Alert.alert(
-                'Photo uploaded!',
-                'Your photo has been uploaded to Firebase Cloud Storage!'
-            );
+            alert("Photo Changed!")
         }).catch(error => console.log(error.message));
     });
 }
 
+/**
+ * allows a user to pick an image from their gallery
+ * @returns {Promise<*>}
+ * @constructor
+ */
 const SelectImage = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -79,6 +109,13 @@ const SelectImage = async () => {
     return pickerResult.uri
 }
 
+/**
+ * uploads the image to firebase
+ * @param uri - location of photo
+ * @param filename - name of the photo
+ * @returns {Promise<void>}
+ * @constructor
+ */
 const UploadImage = async (uri, filename) => {
     const blob: Blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -97,3 +134,19 @@ const UploadImage = async (uri, filename) => {
 }
 
 export default UpdateProfile;
+
+const styles = StyleSheet.create({
+    multilineInput: {
+        padding: 10,
+        backgroundColor: '#4D4B4B',
+        color: colors.lightText,
+        flex: 0.2,
+        borderRadius: 15,
+        marginTop: 5
+    },
+    buttonStyle: {
+        borderWidth: 2,
+        borderColor: 'white',
+        height: 50
+    }
+})

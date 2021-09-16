@@ -2,18 +2,26 @@ import React, {useState} from 'react';
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
 import {getInformation, UpdatedRoutes} from "./API/RouteAPI";
 import MapViewDirections from "react-native-maps-directions";
-import {Image, Pressable, Text, View} from "react-native";
+import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import CustomButton from "./CustomButton";
 import {MessageModal} from "./MessageIcon";
 import ProfileModal from "./ProfileModal";
+import {colors} from "../Styles/GlobalStyles"
 
 
+/**
+ * Returns a list mapViewDirection components for MapView to render the routes.
+ * @param routes - list of routes to render
+ * @param routeInformationCallback - callback for when route is tapped.
+ * @returns {*} - list mapViewDirection components for MapView as child components
+ * @constructor
+ */
 const RenderedRoutes = ({routes, routeInformationCallback}) => {
     return routes.map((r) =>
         <MapViewDirections
             precision={"low"}
             strokeWidth={2}
-            strokeColor={"#FDAF01"}
+            strokeColor={colors.primary}
             tappable={true}
             onPress={() => routeInformationCallback(r.id)}
             key={r.id}
@@ -24,12 +32,21 @@ const RenderedRoutes = ({routes, routeInformationCallback}) => {
     )
 }
 
+
+/**
+ * The map component with routes rendered and a help dialog
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Map = () => {
     const [routes, setRoutes] = useState([]);
     UpdatedRoutes(routes, setRoutes);
     const [routeFocused, setRouteFocused] = useState(false);
     const [routeInformationJSON, setRouteInformationJSON] = useState({});
     const [memberData, setMemberData] = useState({});
+
+    //the callback for when a route is tapped, updates the memberData, routeInformation
+    //and the routeFocused state based on whichever route is tapped.
     const displayRouteInformation = (userIdString) => {
         getInformation(userIdString).then(data => {
                 setMemberData({
@@ -46,12 +63,9 @@ const Map = () => {
     return (
         <>
             <MapView
-                style={{
-                    height: '100%',
-                    width: '100%',
-                    zIndex: 0
-                }}
+                style={{height: '100%', width: '100%', zIndex: 0}}
                 initialRegion={{
+                    // initial region set to NZ
                     latitude: -41.28664,
                     longitude: 174.77557,
                     latitudeDelta: 5,
@@ -61,91 +75,134 @@ const Map = () => {
                 customMapStyle={mapStyle}
             >
                 <RenderedRoutes routes={routes} routeInformationCallback={displayRouteInformation}/>
-
             </MapView>
-            <HelpDialog routeDisplay={routeFocused} routeInformation={routeInformationJSON}
-                        setRouteDisplay={setRouteFocused} memberData={memberData} />
+            <HelpDialog routeDisplay={routeFocused}
+                        routeInformation={routeInformationJSON}
+                        setRouteDisplay={setRouteFocused}
+                        memberData={memberData}/>
         </>
     )
 }
 
+/**
+ * will display a small modal with help text if no route selected.
+ * Will display route information if route is selected.
+ * @param routeDisplay - bool, whether or not a route is selected
+ * @param routeInformation - data for the selected route
+ * @param props - props to send to routeInformationContent component (memberData, etc)
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const HelpDialog = ({routeDisplay, routeInformation, ...props}) => {
     return (
-        <>
-            <View style={{
-                backgroundColor: '#00000080',
-                padding: 10,
-                width: routeDisplay ? "95%" : '60%',
-                height: routeDisplay ? "50%" : "15%",
-                justifyContent: 'center',
-                borderRadius: 20,
-                position: 'absolute',
-                bottom: 0,
-                margin: 10,
-            }}>
-                {routeDisplay ? <HelpDialogContent routeInformation={routeInformation} {...props}/> :
-                    <Text style={{fontSize: 16, color: '#FDAF01'}}>Tap a route for more information</Text>}
-            </View>
-        </>
+        <View style={[styles.helpModal, {width: routeDisplay ? "95%" : '60%', height: routeDisplay ? "50%" : "15%",}]}>
+            {routeDisplay ? <RouteInformationContent routeInformation={routeInformation} {...props}/> :
+                <Text style={{fontSize: 16, color: colors.primary}}>Tap a route for more information</Text>}
+        </View>
     )
 }
 
-const HelpDialogContent = ({routeInformation, setRouteDisplay, memberData}) => {
+/**
+ * Content for the helpDialog when a route is selected, displaying
+ * route information, destination, route owner and buttons to contact
+ * the route owner
+ * @param routeInformation - selected route data
+ * @param setRouteDisplay - function to switch if route is selected
+ * @param memberData - data for member who owns the route.
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}) => {
     const [MessageScreen, setMessageScreen] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
     return (
         <View style={{flexDirection: 'column', width: "100%", height: '100%'}}>
+
             <View style={{flex: 0.25, flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{height: 60, width: 60, borderRadius: 30, flex: 0.2}}
-                       source={{uri: routeInformation.Photo}}/>
-                <Text style={{
-                    left: '20%',
-                    fontSize: 22,
-                    textDecorationLine: "underline",
-                    flex: 0.7,
-                    color: 'white'
-                }}>{routeInformation.Name}</Text>
+                <Image style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>
+                <Text style={styles.routeOwnerText}>{routeInformation.Name}</Text>
                 <Pressable style={{flex: 0.1, alignSelf: 'flex-start'}} onPress={() => setRouteDisplay(false)}>
                     <Image source={require('../assets/icons/close.png')}
                            resizeMode={"contain"}
-                           style={{
-                               width: 20,
-                               height: 20,
-                               right: 0,
-                               tintColor: '#FDAF01',
-                               zIndex: 100,
-                           }}/>
+                           style={styles.closeIcon}/>
                 </Pressable>
-
             </View>
+
             <View style={{flex: 0.5, flexDirection: 'column', justifyContent: 'space-around'}}>
                 <Text style={{color: 'white'}}>Destination: {routeInformation.EndName}</Text>
                 <Text style={{color: 'white'}}>Start Location: {routeInformation.StartName}</Text>
                 <Text style={{color: 'white'}}>Member ID: {memberData.ID}</Text>
             </View>
+
             <View style={{flex: 0.25, flexDirection: 'row', padding: 0}}>
-                <CustomButton color={'transparent'} text={"View Profile"}
-                              buttonStyle={{
-                                  borderWidth: 1,
-                                  borderColor: 'white',
-                                  height: '100%',
-                                  margin: 0,
-                                  marginRight: 5
-                              }}
+                <CustomButton color={'transparent'}
+                              text={"View Profile"}
+                              buttonStyle={styles.viewProfileButton}
                               onPress={() => setShowProfile(true)}
                 />
-                <CustomButton onPress={() => setMessageScreen(!MessageScreen)} color={'#FDAF01'} text={"Message"}
-                              buttonStyle={{height: '100%', margin: 0, marginLeft: 5}}/>
+                <CustomButton onPress={() => setMessageScreen(!MessageScreen)}
+                              color={colors.primary}
+                              text={"Message"}
+                              buttonStyle={styles.messageButton}/>
             </View>
-            <MessageModal modalVisible={MessageScreen} passedMemberData={memberData} setModalVisible={setMessageScreen}
-                          initialScreenConversation={false} />
-            <ProfileModal modalVisible={showProfile} setModalVisible={setShowProfile}
+            {/*these modals are shown if the message or profile buttons are pressed.*/}
+            <MessageModal modalVisible={MessageScreen}
+                          passedMemberData={memberData}
+                          setModalVisible={setMessageScreen}
+                          initialScreenConversation={false}/>
+            <ProfileModal modalVisible={showProfile}
+                          setModalVisible={setShowProfile}
                           setMessageScreen={setMessageScreen}/>
         </View>
     )
 }
 
+const styles = StyleSheet.create({
+    helpModal: {
+        backgroundColor: '#00000080',
+        padding: 10,
+        justifyContent: 'center',
+        borderRadius: 20,
+        position: 'absolute',
+        bottom: 0,
+        margin: 10,
+    },
+    closeIcon: {
+        width: 20,
+        height: 20,
+        right: 0,
+        tintColor: colors.primary,
+        zIndex: 100,
+    },
+    routeOwnerText: {
+        left: '20%',
+        fontSize: 22,
+        textDecorationLine: "underline",
+        flex: 0.7,
+        color: 'white'
+    },
+    viewProfileButton: {
+        borderWidth: 1,
+        borderColor: 'white',
+        height: '100%',
+        margin: 0,
+        marginRight: 5
+    },
+    profilePhoto: {
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+        flex: 0.2
+    },
+    messageButton: {
+        height: '100%',
+        margin: 0,
+        marginLeft: 5
+    }
+})
+
+// styling for the Map
 const mapStyle = [
     {
         "elementType":
