@@ -9,6 +9,12 @@ import {colors} from "../Styles/GlobalStyles"
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * the tab bar that's (almost) always visible at the bottom of the screen,
+ * allowing to switch between the home, map and profile screens
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const TabBar = () => {
     return (
         <Tab.Navigator initialRouteName={"Home"}
@@ -38,6 +44,13 @@ const TabBar = () => {
     );
 }
 
+/**
+ * the layout for the icons that are in the tab bar
+ * @param icon - icon to be used for the tab bar
+ * @param focused - boolean state for whether the tab is focused or not
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const TabBarIcon = ({icon, focused}) => {
     return (
         <View style={{alignItems: "center", justifyContent: "center", top: 5}}>

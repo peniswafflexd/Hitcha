@@ -7,6 +7,13 @@ import {
 } from 'react-native';
 import {colors} from '../Styles/GlobalStyles'
 
+/**
+ * a modal popup displaying a spinning animation to show when something
+ * is being loaded. Stops user interaction with the app while visible.
+ * @param isLoading - boolean state for whether loading modal is visible
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const ModalLoader = ({isLoading}) => {
     return (
         <Modal
@@ -29,6 +36,7 @@ const ModalLoader = ({isLoading}) => {
 
 export default ModalLoader;
 
+// styles
 const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,

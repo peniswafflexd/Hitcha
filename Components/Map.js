@@ -121,7 +121,6 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
         <View style={{flexDirection: 'column', width: "100%", height: '100%'}}>
 
             <View style={{flex: 0.25, flexDirection: 'row', alignItems: 'center'}}>
-                {/*<Image style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>*/}
                 <CustomFastImage style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>
                 <Text style={styles.routeOwnerText}>{routeInformation.Name}</Text>
                 <Pressable style={{flex: 0.1, alignSelf: 'flex-start'}} onPress={() => setRouteDisplay(false)}>
