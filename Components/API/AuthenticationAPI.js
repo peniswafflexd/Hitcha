@@ -44,7 +44,7 @@ const createNewUserDocument = (user, name) => {
             hasCover: true,
             hasProfile: true,
             profileURL: "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/placeholder-profile_1.png",
-            coverURL: "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg",
+            coverURL: "https://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg",
             bio: "I'm a new user who hasn't updated their bio yet!"
         }
     }

@@ -14,7 +14,7 @@ export const uploadImage = async (folder, blob) => {
     const ref = storage.ref().child(folder + "/" + auth.currentUser.uid);
 
     //upload the image to storage
-    const task = await ref
+    await ref
         .put(blob)
         .catch(error => console.log(error.message));
 
@@ -59,19 +59,7 @@ export const ProfileSnapshot = (setProfileData, userID = auth?.currentUser?.uid)
         }
     }, [userID]);
 }
-/**
- * UNUSED - gets an image URL (TODO: check if this can be deleted)
- * @param path
- * @param setImage
- */
-export const getImageURL = (path, setImage) => {
-    storage
-        .ref("/" + path)
-        .getDownloadURL()
-        .then(url => {
-            setImage(url)
-        }).catch(error => console.log(error.code))
-}
+
 /**
  * Updates the users profile with the object given, usually imageURL or new bio message
  * @param updateObj - object to update the profile with.
@@ -83,29 +71,45 @@ export const updateUserProfile = async (updateObj) => {
         .doc(auth?.currentUser?.uid)
         .update(updateObj)
 }
-/**
- * UNUSED - A subscriber to a certain users profileData
- * TODO: see if this is actually used, if not delete it
- * @param userID
- * @param setProfileData
- */
-export const getUserProfileData = (userID, setProfileData) => {
-    useEffect(() => {
-        const subscriber = () => {
-            db
-                .collection('Users')
-                .doc(userID)
-                .onSnapshot((QuerySnapshot) => {
-                        setProfileData(QuerySnapshot.data())
-                    },
-                    error => {
-                        console.log(error)
-                    })
-        }
 
-        return () => {
-            subscriber()
-        };
-    }, []);
 
-}
+// /**
+//  * UNUSED - A subscriber to a certain users profileData
+//  * TODO: see if this is actually used, if not delete it
+//  * @param userID
+//  * @param setProfileData
+//  */
+// export const getUserProfileData = (userID, setProfileData) => {
+//     useEffect(() => {
+//         const subscriber = () => {
+//             db
+//                 .collection('Users')
+//                 .doc(userID)
+//                 .onSnapshot((QuerySnapshot) => {
+//                         setProfileData(QuerySnapshot.data())
+//                     },
+//                     error => {
+//                         console.log(error)
+//                     })
+//         }
+//
+//         return () => {
+//             subscriber()
+//         };
+//     }, []);
+//
+// }
+
+// /**
+//  * UNUSED - gets an image URL (TODO: check if this can be deleted)
+//  * @param path
+//  * @param setImage
+//  */
+// export const getImageURL = (path, setImage) => {
+//     storage
+//         .ref("/" + path)
+//         .getDownloadURL()
+//         .then(url => {
+//             setImage(url)
+//         }).catch(error => console.log(error.code))
+// }

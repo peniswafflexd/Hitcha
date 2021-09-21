@@ -30,9 +30,9 @@ export const getConversationID = (memberID, memberName, photoURL) => {
                     conversationID: conversationID,
                     name: memberName,
                     photoURL: photoURL
-                }) // create the document
+                }).catch(error => console.log(error.message)) // create the document
             }
-        });
+        }).catch(error => console.log(error.message));
 
     return conversationID;
 }
@@ -86,7 +86,7 @@ export const sendMessage = (messages, conversationID, userID) => {
             createdAt,
             text,
             user
-        })
+        }).catch(error => console.log(error.message))
 
     // update the other users conversationList to let them know they have a new unread message
     db.collection("Users")
@@ -99,12 +99,12 @@ export const sendMessage = (messages, conversationID, userID) => {
             photoURL: auth?.currentUser?.photoURL,
             message: text,
             unread: true
-        })
+        }).catch(error => console.log(error.message))
 }
 /**
  * Updates the current users conversation list to say that the message
  * newest message has been read.
- * @param memberID - the ID of the of the person who sent the message thats been read
+ * @param memberID - the ID of the of the person who sent the message that's been read
  */
 export const readMessage = (memberID) => {
     db.collection("Users")
@@ -113,5 +113,5 @@ export const readMessage = (memberID) => {
         .doc(memberID)
         .update({
             unread: false
-        })
+        }).catch(error => console.log(error.message))
 }

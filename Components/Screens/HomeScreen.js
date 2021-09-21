@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {createStackNavigator} from "@react-navigation/stack";
 import PostRouteScreen from "./PostRouteScreen";
 import Header from "../Header"
-import {deleteRoute, getUserRoute} from "../API/RouteAPI";
-import CustomButton from "../CustomButton";
 import {colors} from "../../Styles/GlobalStyles";
 import {ImageButton} from "../ImageButton";
+import {UserRoute} from "../UserRoute";
 
 
 const Stack = createStackNavigator();
@@ -34,7 +33,6 @@ function HomeScreen() {
  */
 function Content({navigation}) {
     const [userRoute, setUserRoute] = useState(undefined);
-    getUserRoute(setUserRoute) // doesn't return anything so not worried about the .then()
     return (
         <SafeAreaView style={style.safeArea}>
             <Header title={"Home"}/>
@@ -45,75 +43,17 @@ function Content({navigation}) {
                 />
                 <ImageButton image={require("../../assets/images/backpacking-small.jpeg")}
                              title={"Hitching Somewhere"}
-                             onPress={()=>navigation.navigate("Map")}
+                             onPress={() => navigation.navigate("Map")}
                 />
             </View>
-            {userRoute ? <UserRoute userRoute={userRoute} setUserRoute={setUserRoute} navigation={navigation}/> : null}
+            <UserRoute userRoute={userRoute} setUserRoute={setUserRoute} navigation={navigation}/>
         </SafeAreaView>
     );
-}
-
-/**
- * user route information plus buttons to edit and finish the route
- * @param userRoute - user route information
- * @param setUserRoute - function to set the state of user route
- * @param navigation - navigation component
- * @returns {JSX.Element}
- * @constructor
- */
-const UserRoute = ({userRoute, setUserRoute, navigation}) => {
-    return (
-        <View style={style.userRouteView}>
-            <Text style={style.userRouteTitle}>Your current route: </Text>
-            <Text style={style.userRouteDetails}>Start:
-                <Text style={style.userRouteAccent}> {userRoute.StartName}</Text>
-            </Text>
-            <Text style={style.userRouteDetails}>End:
-                <Text style={style.userRouteAccent}> {userRoute.EndName}</Text>
-            </Text>
-
-            <View style={{flexDirection: 'row'}}>
-                <CustomButton flex={0.5}
-                              color={"transparent"}
-                              text={"Edit"}
-                              buttonStyle={{borderWidth: 1, borderColor: 'white',}}
-                              onPress={()=>navigation.navigate("PostRoute")}
-                />
-                <CustomButton flex={0.5}
-                              color={colors.primary}
-                              text={"Finish"}
-                              onPress={() => {
-                                  deleteRoute()
-                                  setUserRoute(null)
-                              }}/>
-            </View>
-        </View>
-    )
 }
 
 export default HomeScreen;
 
 const style = StyleSheet.create({
-    userRouteView: {
-        width: '95%',
-        backgroundColor: colors.mediumBlack,
-        margin: 20,
-        borderRadius: 10,
-        flex: 0.25,
-        padding: 10
-    },
-    userRouteTitle: {
-        fontSize: 20,
-        color: colors.lightText
-    },
-    userRouteDetails: {
-        fontSize: 17,
-        color: colors.lightText
-    },
-    userRouteAccent: {
-        fontSize: 17,
-        color: colors.primary
-    },
     safeArea: {
         backgroundColor: colors.darkBlack,
         height: '100%',

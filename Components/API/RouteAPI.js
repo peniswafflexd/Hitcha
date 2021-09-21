@@ -20,19 +20,6 @@ export const addRoute = (route) => {
         })
 }
 
-/**
- * DEPRECATED - get all user routes, (replaced with onSnapshot version)
- * @returns {Promise<void>}
- */
-export const getRoutes = async () => {
-    await db
-        .collection('Routes')
-        .get()
-        .then((data) => {
-                console.log(data)
-            }
-        )
-}
 
 /**
  * a subscriber for the routes collection in firebase, automatically gets
@@ -62,7 +49,6 @@ export const UpdatedRoutes = (routes, setRoutes) => {
 /**
  * gets the information on a specific route and returns the data.
  * @param userIdString - ID of the user who owns the route.
- * @returns {Promise<firebase.firestore.DocumentData>}
  */
 export const getRouteInformation = async (userIdString) => {
     const snapshot = db
@@ -106,3 +92,17 @@ export const deleteRoute = (memberID = auth?.currentUser?.uid) => {
         .delete()
         .then(() => alert("Route Removed"))
 }
+
+/**
+ * DEPRECATED - get all user routes, (replaced with onSnapshot version)
+ * @returns {Promise<void>}
+ */
+// export const getRoutes = async () => {
+//     await db
+//         .collection('Routes')
+//         .get()
+//         .then((data) => {
+//                 console.log(data)
+//             }
+//         )
+// }

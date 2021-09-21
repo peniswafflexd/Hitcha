@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Modal,
-    ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, View, Modal, ActivityIndicator} from 'react-native';
 import {colors} from '../Styles/GlobalStyles'
 
 /**

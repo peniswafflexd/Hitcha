@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
  * @returns {JSX.Element}
  * @constructor
  */
-const LoginSignUp = () => {
+const SignInNavigation = () => {
     return (
     <Stack.Navigator headerMode={false} initialRouteName={"Sign In"}>
         <Stack.Screen name={"Sign Up"} component={SignUpScreen} />
@@ -19,4 +19,4 @@ const LoginSignUp = () => {
     )
 }
 
-export default LoginSignUp;
+export default SignInNavigation;

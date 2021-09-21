@@ -4,10 +4,10 @@ import {getRouteInformation, UpdatedRoutes} from "./API/RouteAPI";
 import MapViewDirections from "react-native-maps-directions";
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import CustomButton from "./CustomButton";
-import {MessageModal} from "./MessageIcon";
 import ProfileModal from "./ProfileModal";
 import {colors} from "../Styles/GlobalStyles"
 import CustomFastImage from "./CustomFastImage";
+import {MessageModal} from "./MessageModal";
 
 
 /**

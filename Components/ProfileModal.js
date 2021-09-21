@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
-import {Image, Pressable, ScrollView, Text, View, StyleSheet} from "react-native";
+import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
-import {placeHolderProfilePhoto} from "./Screens/ProfileScreen";
-import CustomButton from "./CustomButton";
 import {colors} from "../Styles/GlobalStyles"
 import CustomFastImage from "./CustomFastImage";
 import ModalLoader from "./ModalLoader";
@@ -56,7 +54,7 @@ const ProfileModal = ({modalVisible, setModalVisible, memberID, setMessageScreen
  * @constructor
  */
 const ProfilePhoto = ({profileData}) => {
-    if(!profileData?.profile) return <ModalLoader isLoading={true}/>
+    if (!profileData?.profile) return <ModalLoader isLoading={true}/>
     return (
         <View style={{flex: 0.3, width: '100%', alignItems: 'center', zIndex: 10}}>
             {/*<Image source={{uri: profileImage}} style={styles.profileImage}/>*/}
