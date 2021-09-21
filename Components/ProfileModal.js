@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 import {Image, Pressable, ScrollView, Text, View, StyleSheet} from "react-native";
 import Modal from "react-native-modal";
-import {ProfileSnapshot} from "./API/RouteAPI";
 import {placeHolderProfilePhoto} from "./Screens/ProfileScreen";
 import CustomButton from "./CustomButton";
 import {colors} from "../Styles/GlobalStyles"
 import CustomFastImage from "./CustomFastImage";
 import ModalLoader from "./ModalLoader";
+import {ProfileSnapshot} from "./API/ProfileAPI";
 
 /**
  * A modal that shows a basic outline of a users profile

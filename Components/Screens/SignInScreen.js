@@ -3,8 +3,8 @@ import Modal from 'react-native-modal';
 import {Pressable, Text, TextInput, View, StyleSheet} from "react-native";
 import Header from "../Header";
 import CustomButton from "../CustomButton";
-import {signInFirebase} from "../API/RouteAPI";
 import {colors} from "../../Styles/GlobalStyles";
+import {signInFirebase} from "../API/AuthenticationAPI";
 
 /**
  * the screen for signing into the application

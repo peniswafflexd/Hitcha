@@ -3,9 +3,9 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import TabBar from "./Components/TabBar";
-import { auth } from "./Components/API/RouteAPI"
 import {authChanged} from "./Components/API/RouteAPI";
 import LoginSignUp from "./Components/LoginSignUp";
+import {auth} from "./Components/API/APIConstants";
 
 export let setUser = null;
 

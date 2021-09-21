@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
-import {getAllConversationUsers, readMessage} from "./API/RouteAPI";
 import {colors} from "../Styles/GlobalStyles"
 import CustomFastImage from "./CustomFastImage";
+import {getAllConversationUsers, readMessage} from "./API/MessagesAPI";
 
 /**
  * sets whether the conversation modal is visible

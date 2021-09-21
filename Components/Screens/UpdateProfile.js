@@ -3,9 +3,9 @@ import {Keyboard, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-n
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import * as ImagePicker from 'expo-image-picker'
-import {updateUserProfile, uploadImage} from "../API/RouteAPI";
 import {colors} from "../../Styles/GlobalStyles"
 import ModalLoader from "../ModalLoader";
+import {updateUserProfile, uploadImage} from "../API/ProfileAPI";
 
 
 /**

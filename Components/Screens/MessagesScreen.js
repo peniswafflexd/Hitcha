@@ -1,10 +1,11 @@
 import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Image, Pressable, SafeAreaView, Text, View, StyleSheet} from 'react-native';
 import {GiftedChat} from "react-native-gifted-chat";
-import {auth, db, getConversationID, sendMessage} from "../API/RouteAPI";
 import ProfileModal from "../ProfileModal";
 import {colors} from "../../Styles/GlobalStyles"
 import CustomFastImage from "../CustomFastImage";
+import {auth, db} from "../API/APIConstants";
+import {getConversationID, sendMessage} from "../API/MessagesAPI";
 
 
 /**

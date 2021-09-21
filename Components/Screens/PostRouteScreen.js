@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {addRoute, auth} from '../API/RouteAPI'
+import {addRoute} from '../API/RouteAPI'
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Header from "../Header";
 import CustomButton from "../CustomButton";
@@ -9,6 +9,7 @@ import {colors} from "../../Styles/GlobalStyles"
 import * as Location from 'expo-location';
 import Geocoder from "react-native-geocoding"
 import ModalLoader from "../ModalLoader";
+import {auth} from "../API/APIConstants";
 
 
 /**

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
-import {getInformation, UpdatedRoutes} from "./API/RouteAPI";
+import {getRouteInformation, UpdatedRoutes} from "./API/RouteAPI";
 import MapViewDirections from "react-native-maps-directions";
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import CustomButton from "./CustomButton";
@@ -49,7 +49,7 @@ const Map = () => {
     //the callback for when a route is tapped, updates the memberData, routeInformation
     //and the routeFocused state based on whichever route is tapped.
     const displayRouteInformation = (userIdString) => {
-        getInformation(userIdString).then(data => {
+        getRouteInformation(userIdString).then(data => {
                 setMemberData({
                     name: data.Name,
                     photo: data.Photo,

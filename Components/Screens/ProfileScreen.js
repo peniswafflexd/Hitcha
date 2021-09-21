@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {Image, SafeAreaView, ScrollView, Text, View, StyleSheet} from 'react-native';
 import Header from "../Header";
-import {ProfileSnapshot, signOutFirebase} from "../API/RouteAPI";
 import CustomButton from "../CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
 import UpdateProfile from "./UpdateProfile";
 import {colors} from "../../Styles/GlobalStyles"
 import CustomFastImage from "../CustomFastImage";
 import ModalLoader from "../ModalLoader";
+import {signOutFirebase} from "../API/AuthenticationAPI";
+import {ProfileSnapshot} from "../API/ProfileAPI";
 
 // placeholder images if the user doesn't have their own, or they cant be found.
 export const placeHolderCoverPhoto = "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg"
