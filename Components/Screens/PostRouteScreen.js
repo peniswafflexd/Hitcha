@@ -1,51 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {addRoute} from '../API/RouteAPI'
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {CustomSwitch} from "../CustomSwitch";
 import {colors} from "../../Styles/GlobalStyles"
 import * as Location from 'expo-location';
-import Geocoder from "react-native-geocoding"
-import ModalLoader from "../ModalLoader";
 import {auth} from "../API/APIConstants";
-
-
-/**
- * Re-usable component for google places auto-complete box.
- * @param text - text to be displayed above the input
- * @param textStyle - style of being displayed above the input
- * @param flex - vertical flex for container to use
- * @param onPress - call back function for tapping a completion
- * @param zIndex - the zIndex for the component
- * @returns {JSX.Element}
- * @constructor
- */
-const GooglePlacesInput = ({text, textStyle, flex, onPress, zIndex}) => {
-    return (<View style={{flex: flex, position: 'fixed', zIndex: zIndex}}>
-            <Text style={{color: 'white', ...textStyle}}>{text}</Text>
-            <GooglePlacesAutocomplete
-                placeholder='Enter Location'
-                onPress={onPress}
-                minLength={3}
-                fetchDetails={true}
-                enablePoweredByContainer={false}
-                GooglePlacesSearchQuery={{
-                    // gets the place name and coordinate information from google maps API
-                    types: 'gecode'
-                }}
-                textInputProps={{placeholderTextColor: colors.lightText}}
-                query={{
-                    // API KEY
-                    key: 'AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8',
-                    language: 'en',
-                }}
-                styles={googlePlacesStyle}
-            />
-        </View>
-    );
-}
+import {GooglePlacesInput} from "../GooglePlacesInput";
+import {SetLocationFromGPS} from "../SetLocationFromGPS";
 
 
 /**
@@ -149,40 +112,6 @@ function PostRouteScreen({navigation}) {
 }
 
 /**
- * takes coordinates from GPS location and uses googles geocode API to
- * get the address data from it. Then sets the startLocation in the
- * routeLocation data
- * @param location - GPS coordinates
- * @param setRouteLocations - function to set routeLocation data
- * @param routeLocations - routeLocationData
- * @param isLoading - boolean for if the location data is back yet
- * @returns {JSX.Element|null}
- * @constructor
- */
-const SetLocationFromGPS = ({location, setRouteLocations, routeLocations, isLoading}) => {
-    if(isLoading) return <ModalLoader isLoading={isLoading}/>
-    Geocoder.init("AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8", {language: "en"})
-    useEffect(() => {
-        Geocoder.from(location.coords.latitude, location.coords.longitude)
-            .then(json => {
-                let addressComponent = json.results[0].address_components[2].long_name
-                setRouteLocations({
-                    ...routeLocations,
-                    Start: {
-                        lat: location.coords.latitude,
-                        lng: location.coords.longitude
-                    },
-                    StartName: addressComponent
-                })
-            })
-            .catch(error =>
-                console.warn(error)
-            );
-    }, [])
-    return null
-}
-
-/**
  * re-usable component for an icon on the left with text on the right.
  * @param icon - icon to be used (must use require("path/to/icon.png") syntax)
  * @param text - text to be places on right of icon.
@@ -212,30 +141,3 @@ const style = StyleSheet.create({
 
 })
 
-const googlePlacesStyle = {
-    container: {
-      flex: 0
-    },
-    textInputContainer: {
-        width: '75%',
-        marginTop: 10
-    },
-    textInput: {
-        height: 38,
-        color: colors.lightText,
-        fontSize: 16,
-        backgroundColor: '#413F3F',
-        borderRadius: 10,
-    },
-    listView: {
-        width: '89%',
-        borderRadius: 10,
-        height: 100
-    },
-    row: {
-        backgroundColor: colors.mediumBlack,
-    },
-    description: {
-        color: colors.lightText
-    }
-}

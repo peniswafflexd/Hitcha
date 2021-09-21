@@ -1,5 +1,5 @@
 import {auth, db} from "./APIConstants";
-import {useEffect} from "react";
+import {useEffect, useLayoutEffect} from "react";
 
 /**
  * Takes a memberID and uses it to calculate the conversationID, when called
@@ -114,4 +114,24 @@ export const readMessage = (memberID) => {
         .update({
             unread: false
         }).catch(error => console.log(error.message))
+}
+
+export const getMessagesSnapshot = (conversationID, setMessages) => {
+    useLayoutEffect(() => {
+        const unsubscribe = db
+            .collection('chats')
+            .doc(conversationID)
+            .collection("messages")
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(snapshot => setMessages(
+                snapshot.docs.map(doc => ({
+                    _id: doc.data()._id,
+                    createdAt: doc.data().createdAt.toDate(),
+                    text: doc.data().text,
+                    user: doc.data().user
+                }))
+            ))
+        return unsubscribe;
+    }, []);
+
 }

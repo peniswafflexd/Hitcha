@@ -23,4 +23,4 @@ if (!firebase.apps.length) {
 export const db = firebase.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage();
-
+export const GoogleAPIKey = 'AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8'

@@ -5,7 +5,7 @@ import ProfileModal from "../ProfileModal";
 import {colors} from "../../Styles/GlobalStyles"
 import CustomFastImage from "../CustomFastImage";
 import {auth, db} from "../API/APIConstants";
-import {getConversationID, sendMessage} from "../API/MessagesAPI";
+import {getConversationID, getMessagesSnapshot, sendMessage} from "../API/MessagesAPI";
 
 
 /**
@@ -55,26 +55,7 @@ const Messages = ({memberData}) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         sendMessage(messages, conversationID, memberID);
     }, [])
-
-    //TODO: find a place to put this in the RouteAPI file.
-    useLayoutEffect(() => {
-        const unsubscribe = db
-            .collection('chats')
-            .doc(finalConversationID)
-            .collection("messages")
-            .orderBy('createdAt', 'desc')
-            .onSnapshot(snapshot => setMessages(
-                snapshot.docs.map(doc => ({
-                    _id: doc.data()._id,
-                    createdAt: doc.data().createdAt.toDate(),
-                    text: doc.data().text,
-                    user: doc.data().user
-                }))
-            ))
-        return unsubscribe;
-    }, []);
-
-
+    getMessagesSnapshot(finalConversationID, setMessages)
     return (
         <>
             <GiftedChat
