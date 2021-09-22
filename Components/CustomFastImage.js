@@ -26,19 +26,17 @@ const CustomFastImage = (props) => {
             const cacheFileUri = `${FileSystem.cacheDirectory}${cacheKey}`
             let imageExistsInCache = await findImageInCache(cacheFileUri);
             if (imageExistsInCache.exists) {
-                console.log("cached!");
                 setUri(cacheFileUri);
             } else {
                 let cached = await cacheImage(uri, cacheFileUri, () => {});
                 if (cached.cached) {
-                    console.log("cached NEw!");
                     setUri(cached.path);
                 } else {
                     Alert.alert(`Couldn't load Image!`);
                 }
             }
         }
-        loadImg();
+        loadImg() // doesn't return anything so no .then()
         return () => (isMounted.current = false);
     }, [cacheKey]);
     return (
@@ -127,6 +125,6 @@ async function cacheImage(uri, cacheUri) {
  */
 export const deleteFileFromURI = (uri) => {
     let cacheKey = getFileNameFromURI(uri)
-    FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${cacheKey}`, {idempotent: true})
+    FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${cacheKey}`, {idempotent: true}) // no return so no .then()
 }
 export default CustomFastImage;

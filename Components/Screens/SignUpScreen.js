@@ -8,12 +8,11 @@ import {signUpFirebase} from "../API/AuthenticationAPI";
 
 /**
  * The screen for making an account with the application.
- * @param route - TODO: see if this is still needed
  * @param navigation
  * @returns {JSX.Element}
  * @constructor
  */
-const SignUpScreen = ({route, navigation}) => {
+const SignUpScreen = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

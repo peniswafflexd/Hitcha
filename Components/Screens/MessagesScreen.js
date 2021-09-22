@@ -1,22 +1,18 @@
-import React, {useCallback, useLayoutEffect, useState} from 'react';
-import {Image, Pressable, SafeAreaView, Text, View, StyleSheet} from 'react-native';
-import {GiftedChat} from "react-native-gifted-chat";
-import ProfileModal from "../ProfileModal";
+import React from 'react';
+import {Image, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {colors} from "../../Styles/GlobalStyles"
 import CustomFastImage from "../CustomFastImage";
-import {auth, db} from "../API/APIConstants";
-import {getConversationID, getMessagesSnapshot, sendMessage} from "../API/MessagesAPI";
+import {Messages} from "../Messages";
 
 
 /**
  * Chat screen for messaging between members.
  * @param navigation
  * @param memberData - data for the member that is being messaged
- * @param props - TODO: check if this is still needed
  * @returns {JSX.Element}
  * @constructor
  */
-function MessagesScreen({navigation, memberData, ...props}) {
+function MessagesScreen({navigation, memberData}) {
     return (
         <SafeAreaView style={style.safeArea}>
             <View style={style.header}>
@@ -32,45 +28,8 @@ function MessagesScreen({navigation, memberData, ...props}) {
                     </Pressable>
                 </View>
             </View>
-            <Messages memberData={memberData} {...props}/>
+            <Messages memberData={memberData} />
         </SafeAreaView>
-    )
-}
-
-/**
- * logic for the messages that are being sent and received
- * @param memberData - data for the member that is being messaged
- * @returns {JSX.Element}
- * @constructor
- */
-const Messages = ({memberData}) => {
-    //if the conversationID isn't passed through then determine the conversationID from the member ID
-    let finalConversationID = (memberData?.conversationID) ? memberData?.conversationID : getConversationID(memberData?.ID, memberData?.name, memberData?.photo)
-    const [messages, setMessages] = useState([]);
-    //this is used for when the user clicks on the members avatar, so it will show their profile.
-    const [ProfileModalVisible, setProfileModalVisible] = useState(false);
-
-    //callback for when the send button is pressed.
-    const onSend = useCallback((conversationID, memberID, messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        sendMessage(messages, conversationID, memberID);
-    }, [])
-    getMessagesSnapshot(finalConversationID, setMessages)
-    return (
-        <>
-            <GiftedChat
-                messages={messages}
-                showAvatarForEveryMessage={true}
-                onSend={messages => onSend(memberData.conversationID, memberData.ID, messages)}
-                user={{
-                    _id: auth?.currentUser?.email,
-                    name: auth?.currentUser?.displayName,
-                    avatar: auth?.currentUser?.photoURL
-                }}
-                onPressAvatar={() => setProfileModalVisible(true)}
-            />
-            <ProfileModal modalVisible={ProfileModalVisible} setModalVisible={setProfileModalVisible} memberID={memberData.ID}/>
-        </>
     )
 }
 

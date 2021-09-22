@@ -57,6 +57,7 @@ function PostRouteScreen({navigation}) {
         <SafeAreaView style={style.safeArea}>
             <Header title={"Post a Route"}/>
             <View style={{flex: 0.85, flexDirection: 'column', padding: 20}}>
+                {/*only display the google places input if the use GPS option is un-ticked */}
                 {(!useGPS) ? <GooglePlacesInput
                     text={"Where are you starting?"}
                     flex={0.2}

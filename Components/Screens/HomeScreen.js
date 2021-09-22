@@ -7,7 +7,6 @@ import {colors} from "../../Styles/GlobalStyles";
 import {ImageButton} from "../ImageButton";
 import {UserRoute} from "../UserRoute";
 
-
 const Stack = createStackNavigator();
 
 /**

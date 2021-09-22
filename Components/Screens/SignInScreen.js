@@ -8,12 +8,11 @@ import {signInFirebase} from "../API/AuthenticationAPI";
 
 /**
  * the screen for signing into the application
- * @param route - TODO: see if this is still needed.
  * @param navigation
  * @returns {JSX.Element}
  * @constructor
  */
-const SignInScreen = ({route, navigation}) => {
+const SignInScreen = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isVisible, setIsVisible] = useState(true);

@@ -8,7 +8,6 @@ export const getAddressFromCoordinates = (location, setRouteLocations, routeLoca
         Geocoder.from(location.coords.latitude, location.coords.longitude)
             .then(json => {
                 let addressComponent = json.results[0].address_components[2].long_name
-                console.log(json.results)
                 setRouteLocations({
                     ...routeLocations,
                     Start: {

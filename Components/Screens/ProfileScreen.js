@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, SafeAreaView, ScrollView, Text, View, StyleSheet} from 'react-native';
+import { SafeAreaView, ScrollView, Text, View, StyleSheet} from 'react-native';
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
@@ -9,10 +9,6 @@ import CustomFastImage from "../CustomFastImage";
 import ModalLoader from "../ModalLoader";
 import {signOutFirebase} from "../API/AuthenticationAPI";
 import {ProfileSnapshot} from "../API/ProfileAPI";
-
-// placeholder images if the user doesn't have their own, or they cant be found.
-export const placeHolderCoverPhoto = "http://wallpapers.net/web/wallpapers/man-carrying-a-backpack-hd-wallpaper/thumbnail/lg.jpg"
-export const placeHolderProfilePhoto = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/placeholder-profile_1.png"
 
 const Stack = createStackNavigator();
 

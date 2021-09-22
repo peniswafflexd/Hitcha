@@ -8,6 +8,7 @@ import ProfileModal from "./ProfileModal";
 import {colors} from "../Styles/GlobalStyles"
 import CustomFastImage from "./CustomFastImage";
 import {MessageModal} from "./MessageModal";
+import {GoogleAPIKey} from "./API/APIConstants";
 
 
 /**
@@ -28,7 +29,7 @@ const RenderedRoutes = ({routes, routeInformationCallback}) => {
             key={r.id}
             origin={{latitude: r.data().Start.lat, longitude: r.data().Start.lng}}
             destination={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
-            apikey={"AIzaSyDFlHhJbSiC2PhIbGT0o6kl0FfBKfh9LP8"}
+            apikey={GoogleAPIKey}
         />
     )
 }

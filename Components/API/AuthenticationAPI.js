@@ -1,6 +1,5 @@
 import {auth, db} from "./APIConstants";
-import React from "react";
-import {setUser} from "../../App";
+import React, {useEffect} from "react";
 
 /**
  * sign the current user out
@@ -82,14 +81,13 @@ export const signInFirebase = (email, password) => {
 }
 
 /**
- * Change global variables when sign in or sign out is detected
+ * A subscriber for when the auth is changed (if a user logs in or out)
+ * @param setUserAuth - function to set the user state.
  */
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        setUser(user)
-        auth.currentUser = user
-    } else {
-        setUser(user)
-        auth.currentUser = user
-    }
-});
+export const authChanged = (setUserAuth) => {
+    useEffect(() => {
+        return auth.onAuthStateChanged((user) => {
+            setUserAuth(user);
+        })
+    }, [])
+}

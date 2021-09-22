@@ -11,13 +11,12 @@ import {ProfileSnapshot} from "./API/ProfileAPI";
  * @param modalVisible - whether component is visible
  * @param setModalVisible - function to set whether component is visible
  * @param memberID - memberID of the profile to be displayed
- * @param setMessageScreen - function to change to the messages of the person being displayed
  * @returns {JSX.Element}
  * @constructor
  */
-const ProfileModal = ({modalVisible, setModalVisible, memberID, setMessageScreen}) => {
+const ProfileModal = ({modalVisible, setModalVisible, memberID}) => {
     const [userProfileData, setUserProfileData] = useState(null);
-    const [animationTiming, setAnimationTiming] = useState(100)
+    let animationTiming = 100
     ProfileSnapshot(setUserProfileData, memberID)
 
     return (
@@ -57,7 +56,6 @@ const ProfilePhoto = ({profileData}) => {
     if (!profileData?.profile) return <ModalLoader isLoading={true}/>
     return (
         <View style={{flex: 0.3, width: '100%', alignItems: 'center', zIndex: 10}}>
-            {/*<Image source={{uri: profileImage}} style={styles.profileImage}/>*/}
             <CustomFastImage source={{uri: profileData?.profile?.profileURL}} style={styles.profileImage}/>
         </View>
     )

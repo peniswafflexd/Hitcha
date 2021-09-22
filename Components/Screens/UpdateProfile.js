@@ -33,7 +33,7 @@ function UpdateProfile({route, navigation}) {
                 <CustomButton flex={0.2} text={"Update"}
                               onPress={() => {
                                   Keyboard.dismiss();
-                                  updateUserProfile({"profile.bio": bio}).then(()=>setIsLoading(false)) //doesn't return anything so not .then()
+                                  updateUserProfile({"profile.bio": bio}).then(() => setIsLoading(false))
                                   setIsLoading(true)
                               }}
                               buttonStyle={styles.buttonStyle}/>
@@ -95,16 +95,19 @@ const UselessTextInput = (props) => {
  * @constructor
  */
 const ChangeImage = (folder, setIsLoading) => {
-    SelectImage().then((uri) => {
-        UploadImage(uri, folder).then(() => {
-            setIsLoading(false)
-            alert("Photo Changed!")
-            console.log("Photo Changed!")
-        }).catch(error => {
-            setIsLoading(false)
-            alert(error.message)
+    SelectImage()
+        .then((uri) => {
+            UploadImage(uri, folder)
+                .then(() => {
+                    setIsLoading(false)
+                    alert("Photo Changed!")
+                    console.log("Photo Changed!")
+                })
+                .catch(error => {
+                    setIsLoading(false)
+                    alert(error.message)
+                });
         });
-    });
 }
 
 /**
@@ -126,7 +129,8 @@ const SelectImage = async () => {
 }
 
 /**
- * uploads the image to firebase
+ * Creates a blob of a file so that it can be uploaded to
+ * fire-storage asynchronously and then uploads it.
  * @param uri - location of photo
  * @param filename - name of the photo
  * @returns {Promise<void>}
