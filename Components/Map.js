@@ -20,16 +20,27 @@ import {GoogleAPIKey} from "./API/APIConstants";
  */
 const RenderedRoutes = ({routes, routeInformationCallback}) => {
     return routes.map((r) =>
-        <MapViewDirections
-            precision={"low"}
-            strokeWidth={2}
-            strokeColor={colors.primary}
-            tappable={true}
+            <MapViewDirections
+                precision={"low"}
+                strokeWidth={2}
+                strokeColor={colors.primary}
+                tappable={true}
+                onPress={() => routeInformationCallback(r.id)}
+                key={r.id+"route"}
+                origin={{latitude: r.data().Start.lat, longitude: r.data().Start.lng}}
+                destination={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
+                apikey={GoogleAPIKey}
+            />
+    )
+}
+
+const RenderedMarkers = ({routes, routeInformationCallback}) => {
+    return routes.map((r) =>
+        <MapView.Marker
+            key={r.id + "marker"}
+            coordinate={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
+            pinColor={colors.primary}
             onPress={() => routeInformationCallback(r.id)}
-            key={r.id}
-            origin={{latitude: r.data().Start.lat, longitude: r.data().Start.lng}}
-            destination={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
-            apikey={GoogleAPIKey}
         />
     )
 }
@@ -77,6 +88,7 @@ const Map = () => {
                 customMapStyle={mapStyle}
             >
                 <RenderedRoutes routes={routes} routeInformationCallback={displayRouteInformation}/>
+                <RenderedMarkers routes={routes} routeInformationCallback={displayRouteInformation}/>
             </MapView>
             <HelpDialog routeDisplay={routeFocused}
                         routeInformation={routeInformationJSON}
@@ -132,15 +144,19 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
             </View>
 
             <View style={{flex: 0.5, flexDirection: 'column', justifyContent: 'space-around'}}>
-                <Text style={{color: 'white'}}>Destination: {routeInformation.EndName}</Text>
-                <Text style={{color: 'white'}}>Start Location: {routeInformation.StartName}</Text>
-                <Text style={{color: 'white'}}>Member ID: {memberData.ID}</Text>
+                <Text style={{color: colors.primary}}>Destination:
+                    <Text style={{color: 'white'}}>{"         " + routeInformation.EndName}</Text>
+                </Text>
+                <Text style={{color: colors.primary, marginBottom: 30}}>Start Location:
+                    <Text style={{color: 'white'}}>{"     " + routeInformation.StartName}</Text>
+                </Text>
             </View>
 
             <View style={{flex: 0.25, flexDirection: 'row', padding: 0}}>
                 <CustomButton color={'transparent'}
                               text={"View Profile"}
                               buttonStyle={styles.viewProfileButton}
+                              textStyle={{color: colors.primary}}
                               onPress={() => setShowProfile(true)}
                 />
                 <CustomButton onPress={() => setMessageScreen(!MessageScreen)}
@@ -188,7 +204,7 @@ const styles = StyleSheet.create({
     },
     viewProfileButton: {
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: colors.primary,
         height: '100%',
         margin: 0,
         marginRight: 5
