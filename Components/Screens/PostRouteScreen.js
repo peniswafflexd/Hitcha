@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Image, Picker, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {addRoute} from '../API/RouteAPI'
 import Header from "../Header";
 import CustomButton from "../CustomButton";
@@ -23,6 +23,7 @@ function PostRouteScreen({navigation}) {
     const [errorMsg, setErrorMsg] = useState(null);
     const [useGPS, setUseGPS] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [seatNumber, setSeatNumber] = useState("1");
     const [routeLocations, setRouteLocations] = useState({
         Name: auth?.currentUser?.displayName,
         Photo: auth?.currentUser?.photoURL,
@@ -77,7 +78,9 @@ function PostRouteScreen({navigation}) {
                     isLoading={isLoading}
                 />}
 
-                <IconWithText icon={require("../../assets/icons/add.png")} text={"add via destination"}/>
+                {/*<IconWithText icon={require("../../assets/icons/add.png")} text={"add via destination"}/>*/}
+                <CustomSwitch text={"Use GPS Location Instead"} style={{marginBottom: 10}}
+                              callback={() => setUseGPS(!useGPS)}/>
 
                 <GooglePlacesInput
                     text={"Where are you going?"}
@@ -92,9 +95,18 @@ function PostRouteScreen({navigation}) {
                         })
                     }}
                 />
-                <CustomSwitch text={"Use GPS Location Instead"} style={{marginTop: 20}}
-                              callback={() => setUseGPS(!useGPS)}/>
-                <CustomSwitch text={"Only show my route to users with at least one ride"}/>
+
+                {/*This function is for later functionality*/}
+                {/*<CustomSwitch text={"Only show my route to users with at least one ride"}/>*/}
+                <SeatNumberPicker
+                    seatNumber={seatNumber}
+                    setSeatNumber={setSeatNumber}
+                    callback={(seats) => {
+                        setRouteLocations({
+                            ...routeLocations,
+                            Seats: seats
+                        })
+                    }}/>
 
             </View>
             <View style={{height: '15%', flexDirection: 'row'}}>
@@ -103,14 +115,40 @@ function PostRouteScreen({navigation}) {
                               onPress={() => navigation.goBack()}
                 />
                 <View style={{flex: 0.4, height: '100%'}}/>
-                <CustomButton color={colors.primary} text={"Continue"} onPress={() => {
-                    addRoute(routeLocations)
-                    navigation.goBack()
-                }}/>
+                <CustomButton
+                    color={colors.primary}
+                    text={"Continue"}
+                    onPress={() => {
+                        addRoute(routeLocations)
+                        navigation.goBack()
+                    }}/>
             </View>
         </SafeAreaView>
     );
 }
+
+
+const SeatNumberPicker = ({seatNumber, setSeatNumber, callback}) => {
+    let numbers = [1, 2, 3, 4, 5, 6, 7]
+    return (
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end'}}>
+            <Text style={{color: 'white', position: 'absolute', left: 8, top: 57}}>How many free seats do you
+                have?</Text>
+            <Picker
+                selectedValue={seatNumber}
+                style={{position: 'absolute', right: 0, margin: 0, padding: 0, height: 44, width: 100,}}
+                itemStyle={{color: colors.lightText}}
+                onValueChange={(itemValue, itemIndex) => {
+                    setSeatNumber(itemValue)
+                    callback(itemValue)
+                }}
+            >
+                {numbers.map((num) => <Picker.Item key={num} label={"" + num} value={num}/>)}
+            </Picker>
+        </View>
+    );
+}
+
 
 /**
  * re-usable component for an icon on the left with text on the right.

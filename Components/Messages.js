@@ -28,7 +28,7 @@ export const Messages = ({memberData}) => {
             <GiftedChat
                 messages={messages}
                 showAvatarForEveryMessage={true}
-                onSend={messages => onSend(memberData.conversationID, memberData.ID, messages)}
+                onSend={messages => onSend(finalConversationID, memberData.ID, messages)}
                 user={{
                     _id: auth?.currentUser?.email,
                     name: auth?.currentUser?.displayName,

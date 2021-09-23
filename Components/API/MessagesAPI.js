@@ -145,8 +145,7 @@ export const hasUnreadMessage = (setUnread) => {
             .where("unread", "==", true)
             .limit(1)
             .onSnapshot((snapshot) => {
-                if (!snapshot.empty) setUnread(true)
-                console.log("has unread message: " + !snapshot.empty)
+                setUnread(!snapshot.empty)
             })
 
         return () => {

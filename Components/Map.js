@@ -147,8 +147,11 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
                 <Text style={{color: colors.primary}}>Destination:
                     <Text style={{color: 'white'}}>{"         " + routeInformation.EndName}</Text>
                 </Text>
-                <Text style={{color: colors.primary, marginBottom: 30}}>Start Location:
+                <Text style={{color: colors.primary}}>Start Location:
                     <Text style={{color: 'white'}}>{"     " + routeInformation.StartName}</Text>
+                </Text>
+                <Text style={{color: colors.primary, marginBottom: 30}}>Seats:
+                    <Text style={{color: 'white'}}>{"                    " + routeInformation.Seats}</Text>
                 </Text>
             </View>
 
@@ -159,7 +162,7 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
                               textStyle={{color: colors.primary}}
                               onPress={() => setShowProfile(true)}
                 />
-                <CustomButton onPress={() => setMessageScreen(!MessageScreen)}
+                <CustomButton onPress={() => {setMessageScreen(!MessageScreen)}}
                               color={colors.primary}
                               text={"Message"}
                               buttonStyle={styles.messageButton}/>
