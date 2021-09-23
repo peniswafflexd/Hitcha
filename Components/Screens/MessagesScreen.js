@@ -28,7 +28,7 @@ function MessagesScreen({navigation, memberData}) {
                     </Pressable>
                 </View>
             </View>
-            <Messages memberData={memberData} />
+            <Messages memberData={memberData}/>
         </SafeAreaView>
     )
 }
@@ -70,7 +70,6 @@ const style = StyleSheet.create({
         tintColor: colors.primary,
         zIndex: 100
     },
-
 
 
 })

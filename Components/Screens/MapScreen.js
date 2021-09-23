@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, SafeAreaView } from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import {colors} from "../../Styles/GlobalStyles";
 import Map from "../Map"
 import Header from "../Header";
@@ -11,12 +11,12 @@ import Header from "../Header";
  * @constructor
  */
 function MapScreen() {
-    return <SafeAreaView style={{backgroundColor: colors.darkBlack, height: '98%' }}>
-           <Header title={"Catch a Ride"}/>
-            <View style={{flex: 0.85, backgroundColor: '#00ff00'}}>
-                <Map/>
-            </View>
-        </SafeAreaView>
+    return <SafeAreaView style={{backgroundColor: colors.darkBlack, height: '98%'}}>
+        <Header title={"Catch a Ride"}/>
+        <View style={{flex: 0.85, backgroundColor: '#00ff00'}}>
+            <Map/>
+        </View>
+    </SafeAreaView>
 }
 
 export default MapScreen;

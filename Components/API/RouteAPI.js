@@ -92,17 +92,3 @@ export const deleteRoute = (memberID = auth?.currentUser?.uid) => {
         .delete()
         .then(() => alert("Route Removed"))
 }
-
-/**
- * DEPRECATED - get all user routes, (replaced with onSnapshot version)
- * @returns {Promise<void>}
- */
-// export const getRoutes = async () => {
-//     await db
-//         .collection('Routes')
-//         .get()
-//         .then((data) => {
-//                 console.log(data)
-//             }
-//         )
-// }

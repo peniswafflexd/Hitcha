@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { SafeAreaView, ScrollView, Text, View, StyleSheet} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
@@ -80,7 +80,8 @@ const ProfileImages = ({profileData}) => {
 const ProfileContent = ({navigation, profileData}) => {
     return (
         <ScrollView style={{flex: 0.65, margin: 20}}>
-            <Text style={styles.username}>{profileData?.profile?.firstname + " " + profileData?.profile?.lastname}</Text>
+            <Text
+                style={styles.username}>{profileData?.profile?.firstname + " " + profileData?.profile?.lastname}</Text>
             <View style={styles.bio}>
                 <Text style={{color: colors.lightText}}>{profileData?.profile?.bio}</Text>
             </View>
@@ -88,7 +89,12 @@ const ProfileContent = ({navigation, profileData}) => {
                 <CustomButton text={"Update Profile"}
                               onPress={() => navigation.navigate("Update Profile", {bio: profileData?.profile?.bio})}
                               textStyle={{color: colors.primary}}
-                              buttonStyle={{borderWidth: "2", borderColor: colors.primary, height: 50, marginBottom: 10}}/>
+                              buttonStyle={{
+                                  borderWidth: "2",
+                                  borderColor: colors.primary,
+                                  height: 50,
+                                  marginBottom: 10
+                              }}/>
                 <CustomButton text={"Sign Out"}
                               onPress={signOutFirebase}
                               textStyle={{color: 'red'}}

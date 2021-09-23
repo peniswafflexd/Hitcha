@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
-import {Pressable, Text, TextInput, View, StyleSheet} from "react-native";
+import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {colors} from "../../Styles/GlobalStyles"
@@ -21,7 +21,8 @@ const SignUpScreen = ({navigation}) => {
     return (
         <View style={{flexDirection: "column", height: '100%', width: '100%', backgroundColor: "#191919"}}>
             <Header title={"Sign Up"} messageIcon={false}/>
-            <Modal onModalHide={() => navigation.replace("Sign In")} isVisible={isVisible} style={{alignItems: 'center'}} hasBackdrop={false}>
+            <Modal onModalHide={() => navigation.replace("Sign In")} isVisible={isVisible}
+                   style={{alignItems: 'center'}} hasBackdrop={false}>
                 <View style={styles.modal}>
                     <Text style={{top: 0, left: 0, color: colors.lightText, margin: 25}}>Make an Account:</Text>
                     <TextInput
@@ -50,14 +51,14 @@ const SignUpScreen = ({navigation}) => {
                                   onPress={() => {
                                       signUpFirebase(username, email, password)
                                   }}/>
-                        <Pressable hitSlop={5} onPress={() => {
-                            setIsVisible(false)
-                        }}>
-                            <Text style={styles.link}>
-                                Already have an account?
-                                <Text style={{color: colors.primary}}> Sign In</Text>
-                            </Text>
-                        </Pressable>
+                    <Pressable hitSlop={5} onPress={() => {
+                        setIsVisible(false)
+                    }}>
+                        <Text style={styles.link}>
+                            Already have an account?
+                            <Text style={{color: colors.primary}}> Sign In</Text>
+                        </Text>
+                    </Pressable>
                 </View>
             </Modal>
         </View>

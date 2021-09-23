@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import CustomButton from "./CustomButton";
 import {colors} from "../Styles/GlobalStyles";
 import {deleteRoute, getUserRoute} from "./API/RouteAPI";
@@ -14,7 +14,7 @@ import React from "react";
  */
 export const UserRoute = ({userRoute, setUserRoute, navigation}) => {
     getUserRoute(setUserRoute) // doesn't return anything so not worried about the .then()
-    if(!userRoute) return null;
+    if (!userRoute) return null;
     return (
         <View style={styles.userRouteView}>
             <Text style={styles.userRouteTitle}>Your current route: </Text>

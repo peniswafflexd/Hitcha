@@ -20,17 +20,17 @@ import {GoogleAPIKey} from "./API/APIConstants";
  */
 const RenderedRoutes = ({routes, routeInformationCallback}) => {
     return routes.map((r) =>
-            <MapViewDirections
-                precision={"low"}
-                strokeWidth={2}
-                strokeColor={colors.primary}
-                tappable={true}
-                onPress={() => routeInformationCallback(r.id)}
-                key={r.id+"route"}
-                origin={{latitude: r.data().Start.lat, longitude: r.data().Start.lng}}
-                destination={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
-                apikey={GoogleAPIKey}
-            />
+        <MapViewDirections
+            precision={"low"}
+            strokeWidth={2}
+            strokeColor={colors.primary}
+            tappable={true}
+            onPress={() => routeInformationCallback(r.id)}
+            key={r.id + "route"}
+            origin={{latitude: r.data().Start.lat, longitude: r.data().Start.lng}}
+            destination={{latitude: r.data().End.lat, longitude: r.data().End.lng}}
+            apikey={GoogleAPIKey}
+        />
     )
 }
 

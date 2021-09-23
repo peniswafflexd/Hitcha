@@ -135,3 +135,22 @@ export const getMessagesSnapshot = (conversationID, setMessages) => {
     }, []);
 
 }
+
+export const hasUnreadMessage = (setUnread) => {
+    useEffect(() => {
+        const subscriber = db
+            .collection("Users")
+            .doc(auth?.currentUser?.uid)
+            .collection("Conversations")
+            .where("unread", "==", true)
+            .limit(1)
+            .onSnapshot((snapshot) => {
+                if (!snapshot.empty) setUnread(true)
+                console.log("has unread message: " + !snapshot.empty)
+            })
+
+        return () => {
+            subscriber()
+        }
+    }, [])
+}

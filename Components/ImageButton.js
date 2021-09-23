@@ -1,4 +1,4 @@
-import {ImageBackground, Pressable, Text, View, StyleSheet} from "react-native";
+import {ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 import {globalStyles} from "../Styles/GlobalStyles";
 import React from "react";
 

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Modal from "react-native-modal";
 import MessagesScreen from "./Screens/MessagesScreen";
-import {Pressable, ScrollView, Text, View, StyleSheet} from "react-native";
+import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {getAllConversationUsers, readMessage} from "./API/MessagesAPI";
 import CustomFastImage from "./CustomFastImage";
 import {colors} from "../Styles/GlobalStyles";

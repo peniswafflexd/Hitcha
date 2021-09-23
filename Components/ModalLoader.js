@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Modal, ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
 import {colors} from '../Styles/GlobalStyles'
 
 /**
@@ -15,7 +15,9 @@ const ModalLoader = ({isLoading}) => {
             transparent
             animationType={'none'}
             visible={isLoading}
-            onRequestClose={() => { console.log('Noop'); }}
+            onRequestClose={() => {
+                console.log('Noop');
+            }}
         >
             <View style={styles.modalBackground}>
                 <View style={styles.activityIndicatorHolder}>

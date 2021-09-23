@@ -14,6 +14,6 @@ import React from "react";
  * @constructor
  */
 export const SetLocationFromGPS = ({location, setRouteLocations, routeLocations, isLoading}) => {
-    if(!isLoading) getAddressFromCoordinates(location, setRouteLocations, routeLocations);
+    if (!isLoading) getAddressFromCoordinates(location, setRouteLocations, routeLocations);
     return <ModalLoader isLoading={isLoading}/>
 }

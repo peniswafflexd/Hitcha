@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Switch, Text, View, StyleSheet} from "react-native";
+import {StyleSheet, Switch, Text, View} from "react-native";
 
 /**
  * custom switch component
@@ -45,4 +45,5 @@ const styles = StyleSheet.create({
         color: 'white',
         flexWrap: 'wrap',
         flex: 1
-    },})
+    },
+})

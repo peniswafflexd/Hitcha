@@ -36,6 +36,7 @@ export const uploadImage = async (folder, blob) => {
     deleteFileFromURI(downloadURL)
     await updateUserProfile(data);
 }
+
 /**
  * a subscriber for the users profile, automatically gets called when the users
  * profile is changed.
@@ -98,18 +99,4 @@ export const updateUserProfile = async (updateObj) => {
 //         };
 //     }, []);
 //
-// }
-
-// /**
-//  * UNUSED - gets an image URL (TODO: check if this can be deleted)
-//  * @param path
-//  * @param setImage
-//  */
-// export const getImageURL = (path, setImage) => {
-//     storage
-//         .ref("/" + path)
-//         .getDownloadURL()
-//         .then(url => {
-//             setImage(url)
-//         }).catch(error => console.log(error.code))
 // }

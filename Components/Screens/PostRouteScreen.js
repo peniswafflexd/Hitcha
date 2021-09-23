@@ -71,10 +71,10 @@ function PostRouteScreen({navigation}) {
                         })
                     }}
                 /> : <SetLocationFromGPS
-                        location={location}
-                        setRouteLocations={setRouteLocations}
-                        routeLocations={routeLocations}
-                        isLoading={isLoading}
+                    location={location}
+                    setRouteLocations={setRouteLocations}
+                    routeLocations={routeLocations}
+                    isLoading={isLoading}
                 />}
 
                 <IconWithText icon={require("../../assets/icons/add.png")} text={"add via destination"}/>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
-import {Pressable, Text, TextInput, View, StyleSheet} from "react-native";
+import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import Header from "../Header";
 import CustomButton from "../CustomButton";
 import {colors} from "../../Styles/GlobalStyles";
@@ -17,10 +17,11 @@ const SignInScreen = ({navigation}) => {
     const [password, setPassword] = useState("");
     const [isVisible, setIsVisible] = useState(true);
 
-    return  (
+    return (
         <View style={styles.background}>
             <Header title={"Sign In"} messageIcon={false}/>
-            <Modal onModalHide={()=>navigation.replace("Sign Up")} isVisible={isVisible} style={{alignItems: 'center'}} hasBackdrop={false}>
+            <Modal onModalHide={() => navigation.replace("Sign Up")} isVisible={isVisible}
+                   style={{alignItems: 'center'}} hasBackdrop={false}>
                 <View style={styles.modal}>
                     <Text style={{top: 0, left: 0, color: colors.lightText, margin: 25}}>Sign In to your Account:</Text>
                     <TextInput
@@ -44,7 +45,9 @@ const SignInScreen = ({navigation}) => {
                                       console.log("signing in")
                                       signInFirebase(email, password)
                                   }}/>
-                    <Pressable hitSlop={5} onPress={() => {setIsVisible(false)}}>
+                    <Pressable hitSlop={5} onPress={() => {
+                        setIsVisible(false)
+                    }}>
                         <Text style={styles.link}>
                             Don't have an account?
                             <Text style={{color: colors.primary}}> Sign Up</Text>
