@@ -1,6 +1,6 @@
 import {auth, db, storage} from "./APIConstants";
 import {useEffect} from "react";
-import {deleteFileFromURI} from "../CustomFastImage";
+import {deleteFileFromURI} from "../Presentation/CustomFastImage";
 
 /**
  * Upload an image to firebase storage and update the photo links on the

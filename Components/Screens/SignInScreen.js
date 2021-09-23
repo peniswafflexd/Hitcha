@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
-import Header from "../Header";
-import CustomButton from "../CustomButton";
+import Header from "../Presentation/Header";
+import CustomButton from "../Presentation/CustomButton";
 import {colors} from "../../Styles/GlobalStyles";
 import {signInFirebase} from "../API/AuthenticationAPI";
 

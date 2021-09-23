@@ -1,7 +1,7 @@
-import {getConversationID, getMessagesSnapshot, sendMessage} from "./API/MessagesAPI";
+import {getConversationID, getMessagesSnapshot, sendMessage} from "../API/MessagesAPI";
 import React, {useCallback, useState} from "react";
 import {GiftedChat} from "react-native-gifted-chat";
-import {auth} from "./API/APIConstants";
+import {auth} from "../API/APIConstants";
 import ProfileModal from "./ProfileModal";
 
 /**

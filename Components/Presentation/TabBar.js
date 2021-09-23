@@ -1,11 +1,11 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import HomeScreen from "./Screens/HomeScreen";
-import MapScreen from "./Screens/MapScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
+import HomeScreen from "../Screens/HomeScreen";
+import MapScreen from "../Screens/MapScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
 import {Image, View} from "react-native";
-import {colors} from "../Styles/GlobalStyles"
+import {colors} from "../../Styles/GlobalStyles"
 
 const Tab = createBottomTabNavigator();
 
@@ -27,17 +27,17 @@ const TabBar = () => {
                        }}>
             <Tab.Screen name={"Home"} component={HomeScreen} options={{
                 tabBarIcon: ({focused}) => (
-                    <TabBarIcon icon={require('../assets/icons/home.png')} focused={focused}/>
+                    <TabBarIcon icon={require('../../assets/icons/home.png')} focused={focused}/>
                 )
             }}/>
             <Tab.Screen name={"Map"} component={MapScreen} options={{
                 tabBarIcon: ({focused}) => (
-                    <TabBarIcon icon={require('../assets/icons/map.png')} focused={focused}/>
+                    <TabBarIcon icon={require('../../assets/icons/map.png')} focused={focused}/>
                 )
             }}/>
             <Tab.Screen name={"Profile"} component={ProfileScreen} options={{
                 tabBarIcon: ({focused}) => (
-                    <TabBarIcon icon={require('../assets/icons/profile.png')} focused={focused}/>
+                    <TabBarIcon icon={require('../../assets/icons/profile.png')} focused={focused}/>
                 )
             }}/>
         </Tab.Navigator>

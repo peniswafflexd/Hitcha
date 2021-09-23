@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Image, Picker, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {addRoute} from '../API/RouteAPI'
-import Header from "../Header";
-import CustomButton from "../CustomButton";
-import {CustomSwitch} from "../CustomSwitch";
+import Header from "../Presentation/Header";
+import CustomButton from "../Presentation/CustomButton";
+import {CustomSwitch} from "../Presentation/CustomSwitch";
 import {colors} from "../../Styles/GlobalStyles"
 import * as Location from 'expo-location';
 import {auth} from "../API/APIConstants";
-import {GooglePlacesInput} from "../GooglePlacesInput";
-import {SetLocationFromGPS} from "../SetLocationFromGPS";
+import {GooglePlacesInput} from "../Business/GooglePlacesInput";
+import {SetLocationFromGPS} from "../Business/SetLocationFromGPS";
 
 
 /**

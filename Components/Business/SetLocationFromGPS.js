@@ -1,5 +1,5 @@
-import {getAddressFromCoordinates} from "./API/GoogleAPI";
-import ModalLoader from "./ModalLoader";
+import {getAddressFromCoordinates} from "../API/GoogleAPI";
+import ModalLoader from "../Presentation/ModalLoader";
 import React from "react";
 
 /**

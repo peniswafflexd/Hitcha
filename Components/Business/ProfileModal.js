@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
-import {colors} from "../Styles/GlobalStyles"
-import CustomFastImage from "./CustomFastImage";
-import ModalLoader from "./ModalLoader";
-import {ProfileSnapshot} from "./API/ProfileAPI";
+import {colors} from "../../Styles/GlobalStyles"
+import CustomFastImage from "../Presentation/CustomFastImage";
+import ModalLoader from "../Presentation/ModalLoader";
+import {ProfileSnapshot} from "../API/ProfileAPI";
 
 /**
  * A modal that shows a basic outline of a users profile
@@ -28,7 +28,7 @@ const ProfileModal = ({modalVisible, setModalVisible, memberID}) => {
             <View style={styles.modal}>
 
                 <Pressable style={{flex: 0.1, alignSelf: 'flex-end'}} onPress={() => setModalVisible(!modalVisible)}>
-                    <Image source={require('../assets/icons/close.png')}
+                    <Image source={require('../../assets/icons/close.png')}
                            resizeMode={"contain"}
                            style={styles.closeIcon}
                     />

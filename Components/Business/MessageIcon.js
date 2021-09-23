@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Image, Pressable, StyleSheet, View} from "react-native";
-import {colors} from "../Styles/GlobalStyles"
+import {colors} from "../../Styles/GlobalStyles"
 import {MessageModal} from "./MessageModal";
-import {hasUnreadMessage} from "./API/MessagesAPI";
+import {hasUnreadMessage} from "../API/MessagesAPI";
 
 
 /**
@@ -14,7 +14,7 @@ const MessageIcon = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [unread, setUnread] = useState(false);
     hasUnreadMessage(setUnread)
-    let icon = unread ? require(`../assets/icons/messageUnread.png`) : require(`../assets/icons/messages.png`)
+    let icon = unread ? require("../../assets/icons/messageUnread.png") : require("../../assets/icons/messages.png")
     return <View style={{flex: 0.1, right: 10, zIndex: 100}}>
         <Pressable onPress={() => setModalVisible(!modalVisible)}>
             <Image

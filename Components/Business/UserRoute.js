@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
-import CustomButton from "./CustomButton";
-import {colors} from "../Styles/GlobalStyles";
-import {deleteRoute, getUserRoute} from "./API/RouteAPI";
+import CustomButton from "../Presentation/CustomButton";
+import {colors} from "../../Styles/GlobalStyles";
+import {deleteRoute, getUserRoute} from "../API/RouteAPI";
 import React from "react";
 
 /**

@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import Header from "../Header";
-import CustomButton from "../CustomButton";
+import Header from "../Presentation/Header";
+import CustomButton from "../Presentation/CustomButton";
 import {createStackNavigator} from "@react-navigation/stack";
 import UpdateProfile from "./UpdateProfile";
 import {colors} from "../../Styles/GlobalStyles"
-import CustomFastImage from "../CustomFastImage";
-import ModalLoader from "../ModalLoader";
+import CustomFastImage from "../Presentation/CustomFastImage";
+import ModalLoader from "../Presentation/ModalLoader";
 import {signOutFirebase} from "../API/AuthenticationAPI";
 import {ProfileSnapshot} from "../API/ProfileAPI";
 

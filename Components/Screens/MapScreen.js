@@ -1,8 +1,8 @@
 import React from 'react';
 import {SafeAreaView, View} from 'react-native';
 import {colors} from "../../Styles/GlobalStyles";
-import Map from "../Map"
-import Header from "../Header";
+import Map from "../Business/Map"
+import Header from "../Presentation/Header";
 
 /**
  * The map screen, only holds the header and basic style, the rest

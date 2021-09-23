@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Keyboard, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
-import Header from "../Header";
-import CustomButton from "../CustomButton";
+import Header from "../Presentation/Header";
+import CustomButton from "../Presentation/CustomButton";
 import * as ImagePicker from 'expo-image-picker'
 import {colors} from "../../Styles/GlobalStyles"
-import ModalLoader from "../ModalLoader";
+import ModalLoader from "../Presentation/ModalLoader";
 import {updateUserProfile, uploadImage} from "../API/ProfileAPI";
 
 

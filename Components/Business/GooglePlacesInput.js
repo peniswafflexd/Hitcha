@@ -1,8 +1,8 @@
-import {colors} from "../Styles/GlobalStyles";
+import {colors} from "../../Styles/GlobalStyles";
 import {Text, View} from "react-native";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 import React from "react";
-import {GoogleAPIKey} from "./API/APIConstants";
+import {GoogleAPIKey} from "../API/APIConstants";
 
 /**
  * Re-usable component for google places auto-complete box.

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Text, View} from "react-native";
-import MessageIcon from "./MessageIcon";
+import MessageIcon from "../Business/MessageIcon";
 
 /**
  * a header that is used on every screen

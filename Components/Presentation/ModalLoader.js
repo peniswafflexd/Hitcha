@@ -1,6 +1,6 @@
 import React from 'react';
 import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
-import {colors} from '../Styles/GlobalStyles'
+import {colors} from '../../Styles/GlobalStyles'
 
 /**
  * a modal popup displaying a spinning animation to show when something

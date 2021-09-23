@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
-import {getRouteInformation, UpdatedRoutes} from "./API/RouteAPI";
+import {getRouteInformation, UpdatedRoutes} from "../API/RouteAPI";
 import MapViewDirections from "react-native-maps-directions";
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
-import CustomButton from "./CustomButton";
+import CustomButton from "../Presentation/CustomButton";
 import ProfileModal from "./ProfileModal";
-import {colors} from "../Styles/GlobalStyles"
-import CustomFastImage from "./CustomFastImage";
+import {colors} from "../../Styles/GlobalStyles"
+import CustomFastImage from "../Presentation/CustomFastImage";
 import {MessageModal} from "./MessageModal";
-import {GoogleAPIKey} from "./API/APIConstants";
+import {GoogleAPIKey} from "../API/APIConstants";
 
 
 /**
@@ -137,7 +137,7 @@ const RouteInformationContent = ({routeInformation, setRouteDisplay, memberData}
                 <CustomFastImage style={styles.profilePhoto} source={{uri: routeInformation.Photo}}/>
                 <Text style={styles.routeOwnerText}>{routeInformation.Name}</Text>
                 <Pressable style={{flex: 0.1, alignSelf: 'flex-start'}} onPress={() => setRouteDisplay(false)}>
-                    <Image source={require('../assets/icons/close.png')}
+                    <Image source={require('../../assets/icons/close.png')}
                            resizeMode={"contain"}
                            style={styles.closeIcon}/>
                 </Pressable>

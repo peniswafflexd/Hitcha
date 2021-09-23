@@ -1,8 +1,8 @@
 import React from 'react';
 import {Image, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {colors} from "../../Styles/GlobalStyles"
-import CustomFastImage from "../CustomFastImage";
-import {Messages} from "../Messages";
+import CustomFastImage from "../Presentation/CustomFastImage";
+import {Messages} from "../Business/Messages";
 
 
 /**

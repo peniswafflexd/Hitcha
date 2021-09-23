@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {createStackNavigator} from "@react-navigation/stack";
 import PostRouteScreen from "./PostRouteScreen";
-import Header from "../Header"
+import Header from "../Presentation/Header"
 import {colors} from "../../Styles/GlobalStyles";
-import {ImageButton} from "../ImageButton";
-import {UserRoute} from "../UserRoute";
+import {ImageButton} from "../Presentation/ImageButton";
+import {UserRoute} from "../Business/UserRoute";
 
 const Stack = createStackNavigator();
 
