@@ -25,8 +25,7 @@ export const signUpFirebase = (username, email, password) => {
             createNewUserDocument(auth.currentUser, username)
         })
         .catch((error) => {
-            console.log(error.code)
-            console.log(error.message)
+            alert(error.message)
         });
 }
 /**
@@ -75,8 +74,7 @@ export const signInFirebase = (email, password) => {
             React.render
         })
         .catch((error) => {
-            console.log(error.code)
-            console.log(error.message)
+            alert(error.message)
         });
 }
 

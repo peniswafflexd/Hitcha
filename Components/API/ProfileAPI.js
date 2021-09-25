@@ -1,6 +1,6 @@
 import {auth, db, storage} from "./APIConstants";
 import {useEffect} from "react";
-import {deleteFileFromURI} from "../Presentation/CustomFastImage";
+
 
 /**
  * Upload an image to firebase storage and update the photo links on the
@@ -9,7 +9,7 @@ import {deleteFileFromURI} from "../Presentation/CustomFastImage";
  * @param blob - a blob of the image to be uploaded
  * @returns {Promise<void>}
  */
-export const uploadImage = async (folder, blob) => {
+export const uploadImage = async (folder, blob, deleteFileCallback) => {
     // reference to the storage location
     const ref = storage.ref().child(folder + "/" + auth.currentUser.uid);
 
@@ -32,8 +32,8 @@ export const uploadImage = async (folder, blob) => {
             console.log(error.message)
         });
     }
-    // delete the cached version of the image, as now it could be wrong.
-    deleteFileFromURI(downloadURL)
+    // // delete the cached version of the image, as now it could be wrong.
+    deleteFileCallback(downloadURL)
     await updateUserProfile(data);
 }
 
@@ -73,30 +73,3 @@ export const updateUserProfile = async (updateObj) => {
         .update(updateObj)
 }
 
-
-// /**
-//  * UNUSED - A subscriber to a certain users profileData
-//  * TODO: see if this is actually used, if not delete it
-//  * @param userID
-//  * @param setProfileData
-//  */
-// export const getUserProfileData = (userID, setProfileData) => {
-//     useEffect(() => {
-//         const subscriber = () => {
-//             db
-//                 .collection('Users')
-//                 .doc(userID)
-//                 .onSnapshot((QuerySnapshot) => {
-//                         setProfileData(QuerySnapshot.data())
-//                     },
-//                     error => {
-//                         console.log(error)
-//                     })
-//         }
-//
-//         return () => {
-//             subscriber()
-//         };
-//     }, []);
-//
-// }

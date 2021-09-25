@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {Keyboard, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import Header from "../Presentation/Header";
 import CustomButton from "../Presentation/CustomButton";
-import * as ImagePicker from 'expo-image-picker'
 import {colors} from "../../Styles/GlobalStyles"
 import ModalLoader from "../Presentation/ModalLoader";
-import {updateUserProfile, uploadImage} from "../API/ProfileAPI";
+import {updateUserProfile} from "../API/ProfileAPI";
+import {ChangeImage} from "../API/NativeAPI";
 
 
 /**
@@ -86,71 +86,6 @@ const UselessTextInput = (props) => {
             maxLength={255}
         />
     );
-}
-
-/**
- * gets user image and uploads it to firebase
- * @param folder - the folder the image file to change is in
- * @param setIsLoading - state setter for loading screens.
- * @constructor
- */
-const ChangeImage = (folder, setIsLoading) => {
-    SelectImage()
-        .then((uri) => {
-            UploadImage(uri, folder)
-                .then(() => {
-                    setIsLoading(false)
-                    alert("Photo Changed!")
-                    console.log("Photo Changed!")
-                })
-                .catch(error => {
-                    setIsLoading(false)
-                    alert(error.message)
-                });
-        });
-}
-
-/**
- * allows a user to pick an image from their gallery
- * @returns {Promise<*>}
- * @constructor
- */
-const SelectImage = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-        alert('Permission to access camera roll is required!');
-        return;
-    }
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.cancelled === true) {
-        return;
-    }
-    return pickerResult.uri
-}
-
-/**
- * Creates a blob of a file so that it can be uploaded to
- * fire-storage asynchronously and then uploads it.
- * @param uri - location of photo
- * @param filename - name of the photo
- * @returns {Promise<void>}
- * @constructor
- */
-const UploadImage = async (uri, filename) => {
-    const blob: Blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            resolve(xhr.response);
-        };
-        xhr.onerror = function () {
-            reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-    }).catch(error => console.log(error.message));
-
-    await uploadImage(filename, blob);
 }
 
 export default UpdateProfile;

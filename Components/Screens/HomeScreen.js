@@ -5,7 +5,8 @@ import PostRouteScreen from "./PostRouteScreen";
 import Header from "../Presentation/Header"
 import {colors} from "../../Styles/GlobalStyles";
 import {ImageButton} from "../Presentation/ImageButton";
-import {UserRoute} from "../Business/UserRoute";
+import {UserRoute} from "../Presentation/UserRoute";
+import {deleteRoute, getUserRoute} from "../API/RouteAPI";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,11 @@ function HomeScreen() {
  */
 function Content({navigation}) {
     const [userRoute, setUserRoute] = useState(undefined);
+    getUserRoute(setUserRoute) // doesn't return anything so not worried about the .then()
+    const finishOnPress = () => {
+        deleteRoute()
+        setUserRoute(null)
+    }
     return (
         <SafeAreaView style={style.safeArea}>
             <Header title={"Home"}/>
@@ -45,7 +51,7 @@ function Content({navigation}) {
                              onPress={() => navigation.navigate("Map")}
                 />
             </View>
-            <UserRoute userRoute={userRoute} setUserRoute={setUserRoute} navigation={navigation}/>
+            <UserRoute userRoute={userRoute} finishOnPress={finishOnPress} navigation={navigation}/>
         </SafeAreaView>
     );
 }

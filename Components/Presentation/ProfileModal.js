@@ -2,9 +2,8 @@ import React, {useState} from 'react'
 import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import Modal from "react-native-modal";
 import {colors} from "../../Styles/GlobalStyles"
-import CustomFastImage from "../Presentation/CustomFastImage";
-import ModalLoader from "../Presentation/ModalLoader";
-import {ProfileSnapshot} from "../API/ProfileAPI";
+import CustomFastImage from "./CustomFastImage";
+import ModalLoader from "./ModalLoader";
 
 /**
  * A modal that shows a basic outline of a users profile
@@ -14,10 +13,8 @@ import {ProfileSnapshot} from "../API/ProfileAPI";
  * @returns {JSX.Element}
  * @constructor
  */
-const ProfileModal = ({modalVisible, setModalVisible, memberID}) => {
-    const [userProfileData, setUserProfileData] = useState(null);
+const ProfileModal = ({modalVisible, setModalVisible, userProfileData}) => {
     let animationTiming = 100
-    ProfileSnapshot(setUserProfileData, memberID)
 
     return (
         <Modal isVisible={modalVisible}

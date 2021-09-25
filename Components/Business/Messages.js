@@ -2,7 +2,8 @@ import {getConversationID, getMessagesSnapshot, sendMessage} from "../API/Messag
 import React, {useCallback, useState} from "react";
 import {GiftedChat} from "react-native-gifted-chat";
 import {auth} from "../API/APIConstants";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "../Presentation/ProfileModal";
+import {ProfileSnapshot} from "../API/ProfileAPI";
 
 /**
  * logic for the messages that are being sent and received
@@ -16,6 +17,9 @@ export const Messages = ({memberData}) => {
     const [messages, setMessages] = useState([]);
     //this is used for when the user clicks on the members avatar, so it will show their profile.
     const [ProfileModalVisible, setProfileModalVisible] = useState(false);
+    const [profileData, setProfileData] = useState(null)
+    ProfileSnapshot(setProfileData, memberData.ID)
+
 
     //callback for when the send button is pressed.
     const onSend = useCallback((conversationID, memberID, messages = []) => {
@@ -34,10 +38,12 @@ export const Messages = ({memberData}) => {
                     name: auth?.currentUser?.displayName,
                     avatar: auth?.currentUser?.photoURL
                 }}
-                onPressAvatar={() => setProfileModalVisible(true)}
+                onPressAvatar={() =>{
+                    setProfileModalVisible(true)
+                }}
             />
             <ProfileModal modalVisible={ProfileModalVisible} setModalVisible={setProfileModalVisible}
-                          memberID={memberData.ID}/>
+                          userProfileData={profileData}/>
         </>
     )
 }

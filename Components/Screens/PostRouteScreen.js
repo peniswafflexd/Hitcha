@@ -96,8 +96,9 @@ function PostRouteScreen({navigation}) {
                     }}
                 />
 
-                {/*This function is for later functionality*/}
+                {/*This component is for later functionality*/}
                 {/*<CustomSwitch text={"Only show my route to users with at least one ride"}/>*/}
+
                 <SeatNumberPicker
                     seatNumber={seatNumber}
                     setSeatNumber={setSeatNumber}

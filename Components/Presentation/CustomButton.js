@@ -4,7 +4,7 @@ import React from "react";
 
 
 /**
- * a custom button thats used throughout the application.
+ * a custom button that's used throughout the application.
  * @param color - color of button
  * @param text - button text
  * @param buttonStyle - style props to pass to button

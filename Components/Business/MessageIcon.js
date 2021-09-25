@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Image, Pressable, StyleSheet, View} from "react-native";
 import {colors} from "../../Styles/GlobalStyles"
-import {MessageModal} from "./MessageModal";
+import {MessageModal} from "../Presentation/MessageModal";
 import {hasUnreadMessage} from "../API/MessagesAPI";
 
 

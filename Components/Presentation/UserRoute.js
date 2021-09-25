@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
-import CustomButton from "../Presentation/CustomButton";
+import CustomButton from "./CustomButton";
 import {colors} from "../../Styles/GlobalStyles";
-import {deleteRoute, getUserRoute} from "../API/RouteAPI";
 import React from "react";
 
 /**
@@ -12,8 +11,7 @@ import React from "react";
  * @returns {JSX.Element}
  * @constructor
  */
-export const UserRoute = ({userRoute, setUserRoute, navigation}) => {
-    getUserRoute(setUserRoute) // doesn't return anything so not worried about the .then()
+export const UserRoute = ({userRoute, finishOnPress, navigation}) => {
     if (!userRoute) return null;
     return (
         <View style={styles.userRouteView}>
@@ -35,10 +33,7 @@ export const UserRoute = ({userRoute, setUserRoute, navigation}) => {
                 <CustomButton flex={0.5}
                               color={colors.primary}
                               text={"Finish"}
-                              onPress={() => {
-                                  deleteRoute()
-                                  setUserRoute(null)
-                              }}/>
+                              onPress={finishOnPress}/>
             </View>
         </View>
     )
